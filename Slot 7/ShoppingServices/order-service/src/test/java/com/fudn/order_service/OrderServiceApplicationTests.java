@@ -12,22 +12,17 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
-import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import org.wiremock.spring.ConfigureWireMock;
+import org.wiremock.spring.EnableWireMock;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EnableWireMock(@ConfigureWireMock(baseUrlProperties = "inventory.url"))
 class OrderServiceApplicationTests {
-
-    @RegisterExtension
-    static WireMockExtension wireMockServer = WireMockExtension.newInstance()
-            .options(wireMockConfig().dynamicPort())
-            .build();
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("inventory.url", wireMockServer::baseUrl);
-    }
 
     @ServiceConnection
     static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.3.0");
@@ -68,5 +63,28 @@ class OrderServiceApplicationTests {
                 .body().asString();
 
         assertThat(responseBodyString, Matchers.is("Order Placed Successfully"));
+        // Xac nhan Order Service da goi dung URL sang Inventory
+        verify(getRequestedFor(urlEqualTo("/api/inventory?skuCode=iphone_15&quantity=1")));
+    }
+
+    @Test
+    void shouldFailOrderWhenProductIsNotInStock() {
+        String submitOrderJson = """
+                {
+                     "skuCode": "iphone_15",
+                     "price": 1000,
+                     "quantity": 1000
+                }
+                """;
+        InventoryStubs.stubInventoryOutOfStock("iphone_15", 1000);
+
+        RestAssured.given()
+                .contentType("application/json")
+                .body(submitOrderJson)
+                .when()
+                .post("/api/order")
+                .then()
+                .log().all()
+                .statusCode(500);
     }
 }
