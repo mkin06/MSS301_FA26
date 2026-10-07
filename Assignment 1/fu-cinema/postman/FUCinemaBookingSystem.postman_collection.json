@@ -258,7 +258,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.environment.set(\"newEmail\",`user${Date.now()}@gmail.com`);"
+                  "pm.environment.set(\"newEmail\",`user${Date.now()}@gmail.com`);",
+                  "pm.environment.set(\"runId\", String(Date.now()));"
                 ]
               }
             },
@@ -870,7 +871,7 @@
             "description": "**201**, lưu `genreId`",
             "body": {
               "mode": "raw",
-              "raw": "{\"genreName\": \"Tài liệu {{$timestamp}}\", \"description\": \"Phim tài liệu\"}",
+              "raw": "{\"genreName\": \"Tài liệu {{runId}}\", \"description\": \"Phim tài liệu\"}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -909,7 +910,7 @@
             "description": "**403**",
             "body": {
               "mode": "raw",
-              "raw": "{\"genreName\": \"Tài liệu {{$timestamp}}\", \"description\": \"Phim tài liệu\"}",
+              "raw": "{\"genreName\": \"Tài liệu {{runId}}\", \"description\": \"Phim tài liệu\"}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -986,7 +987,7 @@
             "description": "**200**",
             "body": {
               "mode": "raw",
-              "raw": "{\"genreName\": \"Tài liệu {{$timestamp}}\", \"description\": \"Đã cập nhật\"}",
+              "raw": "{\"genreName\": \"Tài liệu {{runId}}\", \"description\": \"Đã cập nhật\"}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1007,7 +1008,7 @@
           ]
         },
         {
-          "name": "3.6 DELETE /api/genres/{{seedGenreActionId}}",
+          "name": "3.6 DELETE /api/genres/{{seedGenreScifiId}}",
           "request": {
             "method": "DELETE",
             "header": [
@@ -1016,7 +1017,7 @@
                 "value": "Bearer {{adminToken}}"
               }
             ],
-            "url": "{{gateway}}/api/genres/{{seedGenreActionId}}",
+            "url": "{{gateway}}/api/genres/{{seedGenreScifiId}}",
             "description": "**409** (đang có phim)"
           },
           "event": [
@@ -1050,7 +1051,7 @@
             "description": "**201**, `totalSeats = 40`, lưu `roomId`",
             "body": {
               "mode": "raw",
-              "raw": "{\"roomName\": \"Room Test {{$timestamp}}\", \"roomType\": \"STANDARD\", \"seatRows\": 5, \"seatsPerRow\": 8, \"roomStatus\": \"ACTIVE\"}",
+              "raw": "{\"roomName\": \"Room Test {{runId}}\", \"roomType\": \"STANDARD\", \"seatRows\": 5, \"seatsPerRow\": 8, \"roomStatus\": \"ACTIVE\"}",
               "options": {
                 "raw": {
                   "language": "json"
