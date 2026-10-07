@@ -4,7 +4,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: cinema-sqlserver
     ports:
-      - "1433:1433"
+      - "${SQLSERVER_PORT:-1434}:1433"
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "Fucinema@2026"
@@ -47,7 +47,7 @@ services:
     image: mysql:8.3.0
     container_name: cinema-mysql
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT:-3307}:3306"
     environment:
       MYSQL_ROOT_PASSWORD: mysql
     volumes:
