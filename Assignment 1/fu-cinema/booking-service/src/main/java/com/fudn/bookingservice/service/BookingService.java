@@ -36,7 +36,15 @@ public class BookingService {
     // ======================= F7: SEAT MAP =======================
 
     // TODO 7.6
-
+    public SeatMapResponse getSeatMap(String showtimeId) {
+        ShowtimeResponse st = fetchShowtime(showtimeId);
+        List<String> booked = bookingDetailRepository
+                .findSeatCodesByShowtime(showtimeId, BookingStatus.CONFIRMED)
+                .stream().sorted().toList();
+        int totalSeats = st.seatRows() * st.seatsPerRow();
+        return new SeatMapResponse(st.showtimeId(), st.movieTitle(), st.roomName(), st.startTime(),
+                st.seatRows(), st.seatsPerRow(), totalSeats, totalSeats - booked.size(), booked);
+    }
 
     // ======================= F7: CREATE BOOKING =======================
 
