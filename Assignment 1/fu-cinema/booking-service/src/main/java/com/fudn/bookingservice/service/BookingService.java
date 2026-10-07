@@ -12,6 +12,8 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,7 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final BookingDetailRepository bookingDetailRepository;
     private final MovieClient movieClient;
+    private final JdbcTemplate jdbcTemplate;
 
     // ======================= F7: SEAT MAP =======================
 
@@ -96,7 +99,17 @@ public class BookingService {
         }
 
         booking.setTotalPrice(total);
-        Booking saved = bookingRepository.save(booking);           // cascade luu luon details
+        Booking saved = bookingRepository.saveAndFlush(booking);
+        // The database arbitrates races; any conflict rolls back the entire booking.
+        for (BookingDetail detail : saved.getDetails()) {
+            try {
+                jdbcTemplate.update("INSERT INTO active_seat (showtime_id, seat_code, booking_id) VALUES (?, ?, ?)",
+                        detail.getShowtimeId(), detail.getSeatCode(), saved.getBookingId());
+            } catch (DuplicateKeyException ex) {
+                throw ApiException.conflict("Seat " + detail.getSeatCode() + " of showtime "
+                        + detail.getShowtimeId() + " is already booked");
+            }
+        }
         log.info("Booking {} created for customer {} with {} ticket(s), total {}",
                 saved.getBookingId(), customerId, saved.getDetails().size(), total);
         return BookingResponse.from(saved);
@@ -137,6 +150,7 @@ public class BookingService {
             }
         }
         booking.setBookingStatus(BookingStatus.CANCELLED);
+        jdbcTemplate.update("DELETE FROM active_seat WHERE booking_id = ?", bookingId);
         return BookingResponse.from(bookingRepository.save(booking));
     }
 
