@@ -1,0 +1,148 @@
+{
+  "tests": [
+    {
+      "name": "BR09: ten simultaneous requests sell one seat once; failed bookings roll back",
+      "statuses": [
+        201,
+        409,
+        409,
+        409,
+        409,
+        409,
+        409,
+        409,
+        409,
+        409
+      ],
+      "passed": true
+    },
+    {
+      "name": "Cancel concurrent winning booking",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "passed": true
+    },
+    {
+      "name": "Rebook seat after reservation release",
+      "expectedStatus": 201,
+      "actualStatus": 201,
+      "passed": true
+    },
+    {
+      "name": "Clean up rebooked ticket",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "passed": true
+    },
+    {
+      "name": "Schedule upcoming showtime",
+      "expectedStatus": 201,
+      "actualStatus": 201,
+      "passed": true
+    },
+    {
+      "name": "Book upcoming showtime",
+      "expectedStatus": 201,
+      "actualStatus": 201,
+      "passed": true
+    },
+    {
+      "name": "BR12: customer cannot cancel inside two hours",
+      "expectedStatus": 400,
+      "actualStatus": 400,
+      "passed": true
+    },
+    {
+      "name": "BR12: admin can cancel inside two hours",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "passed": true
+    },
+    {
+      "name": "Cancel test showtime",
+      "expectedStatus": 204,
+      "actualStatus": 204,
+      "passed": true
+    },
+    {
+      "name": "BR05: adjacent half-open showtime intervals are allowed",
+      "expectedStatus": 201,
+      "actualStatus": 201,
+      "passed": true
+    },
+    {
+      "name": "Update showtime and recompute end time",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "passed": true
+    },
+    {
+      "name": "BR05: updated showtime cannot overlap another interval",
+      "expectedStatus": 409,
+      "actualStatus": 409,
+      "passed": true
+    },
+    {
+      "name": "Cancel adjacent showtime",
+      "expectedStatus": 204,
+      "actualStatus": 204,
+      "passed": true
+    },
+    {
+      "name": "BR15: nonexistent room is rejected",
+      "expectedStatus": 404,
+      "actualStatus": 404,
+      "passed": true
+    },
+    {
+      "name": "BR01: registering admin email is rejected",
+      "expectedStatus": 409,
+      "actualStatus": 409,
+      "passed": true
+    },
+    {
+      "name": "Expired JWT is rejected",
+      "expectedStatus": 401,
+      "actualStatus": 401,
+      "passed": true
+    },
+    {
+      "name": "JWT signed with another secret is rejected",
+      "expectedStatus": 401,
+      "actualStatus": 401,
+      "passed": true
+    },
+    {
+      "name": "BR14: unavailable Movie Service returns 503",
+      "expectedStatus": 503,
+      "actualStatus": 503,
+      "passed": true
+    },
+    {
+      "name": "Movie Service restart does not duplicate any collection",
+      "before": [
+        6,
+        5,
+        5,
+        9
+      ],
+      "after": [
+        6,
+        5,
+        5,
+        9
+      ],
+      "passed": true
+    },
+    {
+      "name": "Report groups two movies and sorts revenue descending with consistent totals",
+      "revenues": [
+        285000.0,
+        150000.0
+      ],
+      "passed": true
+    }
+  ],
+  "passed": 20,
+  "failed": 0
+}

@@ -134,3 +134,41 @@ Mỗi TODO có commit riêng với footer Refs: TODO x.y. Thứ tự dựa trên
 - BR16: đọc/ghi tên tiếng Việt qua SQL Server NVARCHAR.
 - Gateway phải xóa header ngữ cảnh giả, kiểm tra token sai/hết hạn và quyền từng endpoint.
 - Postman kiểm thử qua port 9000; kết quả thực chạy được ghi trong README và báo cáo kiểm thử.
+
+## Kết quả triển khai và nghiệm thu
+
+Toàn bộ TODO 0.1–11.3 đã được triển khai. Các TODO dùng chung số 0.3,
+0.5 và 0.6 được commit riêng cho từng service, không gộp mã nghiệp vụ
+vào commit bootstrap. Mỗi commit Java được kiểm tra bằng `mvn -q compile`.
+
+| Nhóm | Phân tích và kiểm chứng |
+|---|---|
+| 0.1–0.2 | Compose sở hữu ba database riêng; SQL Server dùng init container vì không có cơ chế initdb của MySQL. Host port 1435/3307 tránh dịch vụ có sẵn; SQL Server healthy, init Exited 0 và ba database đã được xác nhận. |
+| 0.3–0.6 | Bốn Maven project độc lập, đúng phiên bản bắt buộc, có Controller–Service–Repository; lỗi JSON thống nhất. Aggregate pom cho phép chạy một lệnh verify cả bốn project. |
+| 1.1–1.5 | Admin đọc từ cấu hình, customer đọc SQL Server; BCrypt kiểm tra password và JWT HS256 có uid/sub/role/iat/exp. Collection 01 xác nhận login, validation, inactive và token sai. |
+| 2.1–2.6 | Flyway T-SQL dùng IDENTITY và NVARCHAR; DTO không trả password. Collection 02 kiểm tra register, email trùng, profile, đổi mật khẩu; truy vấn database xác nhận tên tiếng Việt đúng dấu. |
+| 3.1–3.3 | Admin DTO cho phép cập nhật không đổi password; tạo mới vẫn bắt buộc password. CRUD có search và soft delete INACTIVE, được kiểm tra qua Collection 02. |
+| 4.1–4.4 | MongoDB dùng ObjectId cố định, unique index cho tên; seeder kiểm tra từng collection. Collection 03 kiểm tra CRUD/BR03, Java test và restart thật xác nhận không nhân đôi seed. |
+| 5.1–5.4 | Movie lưu genreId tham chiếu; MongoTemplate Criteria lọc tùy chọn, Pattern.quote tránh keyword trở thành regex. Application-side join trả genreName; Collection 04 xác nhận filter và tham chiếu không tồn tại. |
+| 6.1–6.5 | Tiền lưu Decimal128; derived query đếm giao nhau theo khoảng nửa mở. Service kiểm tra trạng thái/phòng/thời gian/tham chiếu, tự tính endTime. Collection 05 và kiểm thử bổ sung xác nhận trùng giờ, giờ tiếp giáp, cập nhật và hủy mềm. |
+| 7.1–7.7 | Feign gọi trực tiếp Movie Service; booking lưu snapshot và tổng giá server tính. Bảng active_seat bảo vệ BR09 trong database, cùng transaction với booking. Collection 06 kiểm tra BR07–BR10; 10 request đồng thời có đúng 1 thành công và 9 phản hồi 409, không có booking dở dang. |
+| 8.1–8.4 | History sắp giảm dần; detail/cancel kiểm tra chủ sở hữu. Hủy customer áp dụng hạn 2 giờ, admin được bỏ qua hạn; reservation được xóa cùng transaction. Collection 07, Java test và API thật xác nhận giải phóng ghế và hủy lại bị từ chối. |
+| 9.1–9.3 | Khoảng report dùng đầu startDate đến trước đầu ngày kế tiếp endDate, tránh bỏ sót timestamp có phần thập phân. Chỉ CONFIRMED, snapshot tránh gọi Movie Service. Collection 08 kiểm tra kỳ báo cáo; kiểm thử hai phim xác nhận nhóm doanh thu giảm dần và tổng khớp. |
+| 10.1–10.4 | Gateway xác minh HS256 và claim role, xóa header giả trước khi chèn ngữ cảnh đã xác thực. Java test/API thật kiểm tra quyền, token hết hạn/sai chữ ký; lỗi 401/403 có JSON cùng cấu trúc. |
+| 11.1–11.3 | Environment/Collection đã export; Newman chạy cùng Postman scripts: 85 request, 150 assertion pass. README, báo cáo HTML/JSON, xác minh database và ảnh kết quả được lưu trong fu-cinema/postman. |
+
+Kết quả `mvn clean verify`: **20 test Java pass**, 0 failure/error.
+Kiểm thử API bổ sung: **20 kiểm tra pass**, bao gồm BR14 khi tắt Movie
+Service và seed khi khởi động lại. Đối chiếu báo cáo tại
+`fu-cinema/postman/test-results.json`, `extra-test-results.json` và
+`database-verification.json`.
+
+Điểm sửa so với guide: test xóa genre đang có phim dùng genre seed
+**Khoa học viễn tưởng**; genre **Hành động** trong seed không có phim nên
+không thể kỳ vọng 409. Tên dữ liệu test dùng mã lượt chạy theo mili giây
+để tránh trùng do độ phân giải giây của `{{$timestamp}}`.
+
+Nhánh `Assignment-1` giữ toàn bộ tiến độ tại local. Author và committer
+cho tất cả commit mới chỉ là Lê Ngọc Minh Kiên
+`<lengocminhkien06@gmail.com>`; không có Co-authored-by. Hai file Word
+không thay đổi và không được đưa vào commit.

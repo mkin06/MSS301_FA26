@@ -1,0 +1,1360 @@
+{
+  "runner": "Newman",
+  "gateway": "http://localhost:9000",
+  "startedAt": "2026-10-07T09:43:51.233000+07:00",
+  "stats": {
+    "iterations": {
+      "total": 1,
+      "pending": 0,
+      "failed": 0
+    },
+    "items": {
+      "total": 85,
+      "pending": 0,
+      "failed": 0
+    },
+    "scripts": {
+      "total": 89,
+      "pending": 0,
+      "failed": 0
+    },
+    "prerequests": {
+      "total": 85,
+      "pending": 0,
+      "failed": 0
+    },
+    "requests": {
+      "total": 85,
+      "pending": 0,
+      "failed": 0
+    },
+    "tests": {
+      "total": 85,
+      "pending": 0,
+      "failed": 0
+    },
+    "assertions": {
+      "total": 150,
+      "pending": 0,
+      "failed": 0
+    },
+    "testScripts": {
+      "total": 85,
+      "pending": 0,
+      "failed": 0
+    },
+    "prerequestScripts": {
+      "total": 4,
+      "pending": 0,
+      "failed": 0
+    }
+  },
+  "javaTests": [
+    {
+      "name": "com.fudn.gateway.GatewaySecurityTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "18.551"
+    },
+    {
+      "name": "com.fudn.bookingservice.service.BookingServiceTest",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.084"
+    },
+    {
+      "name": "com.fudn.movieservice.config.DataSeederTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.937"
+    }
+  ],
+  "requests": [
+    {
+      "name": "1.1 POST /api/auth/login",
+      "status": 200,
+      "responseTimeMs": 88,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "1.2 POST /api/auth/login",
+      "status": 200,
+      "responseTimeMs": 1355,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "1.3 POST /api/auth/login",
+      "status": 401,
+      "responseTimeMs": 144,
+      "assertions": [
+        {
+          "name": "Status 401",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "1.4 POST /api/auth/login",
+      "status": 403,
+      "responseTimeMs": 119,
+      "assertions": [
+        {
+          "name": "Status 403",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "1.5 POST /api/auth/login",
+      "status": 400,
+      "responseTimeMs": 37,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "1.6 GET /api/customers/me",
+      "status": 401,
+      "responseTimeMs": 11,
+      "assertions": [
+        {
+          "name": "Status 401",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "1.7 GET /api/customers/me",
+      "status": 401,
+      "responseTimeMs": 7,
+      "assertions": [
+        {
+          "name": "Status 401",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.1 POST /api/customers/register",
+      "status": 201,
+      "responseTimeMs": 478,
+      "assertions": [
+        {
+          "name": "Status 201",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.2 POST /api/customers/register",
+      "status": 409,
+      "responseTimeMs": 39,
+      "assertions": [
+        {
+          "name": "Status 409",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.3 POST /api/customers/register",
+      "status": 400,
+      "responseTimeMs": 23,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.4 POST /api/auth/login",
+      "status": 200,
+      "responseTimeMs": 224,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.5 GET /api/customers/me",
+      "status": 200,
+      "responseTimeMs": 114,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.6 PUT /api/customers/me",
+      "status": 200,
+      "responseTimeMs": 177,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.7 PUT /api/customers/me/password",
+      "status": 400,
+      "responseTimeMs": 146,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.8 PUT /api/customers/me/password",
+      "status": 204,
+      "responseTimeMs": 209,
+      "assertions": [
+        {
+          "name": "Status 204",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.9 POST /api/auth/login",
+      "status": 200,
+      "responseTimeMs": 96,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.10 GET /api/customers",
+      "status": 403,
+      "responseTimeMs": 5,
+      "assertions": [
+        {
+          "name": "Status 403",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.11 GET /api/customers?keyword=gmail",
+      "status": 200,
+      "responseTimeMs": 122,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.12 GET /api/customers/99999",
+      "status": 404,
+      "responseTimeMs": 34,
+      "assertions": [
+        {
+          "name": "Status 404",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.13 POST /api/customers",
+      "status": 201,
+      "responseTimeMs": 132,
+      "assertions": [
+        {
+          "name": "Status 201",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.14 PUT /api/customers/{{adminCreatedId}}",
+      "status": 200,
+      "responseTimeMs": 154,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.15 DELETE /api/customers/{{adminCreatedId}}",
+      "status": 204,
+      "responseTimeMs": 103,
+      "assertions": [
+        {
+          "name": "Status 204",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.16 GET /api/customers/{{adminCreatedId}}",
+      "status": 200,
+      "responseTimeMs": 30,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.17 GET /api/customers/me",
+      "status": 403,
+      "responseTimeMs": 10,
+      "assertions": [
+        {
+          "name": "Status 403",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "2.18 GET /api/customers/me",
+      "status": 200,
+      "responseTimeMs": 50,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "3.1 GET /api/genres",
+      "status": 200,
+      "responseTimeMs": 25,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "3.2 POST /api/genres",
+      "status": 201,
+      "responseTimeMs": 400,
+      "assertions": [
+        {
+          "name": "Status 201",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "3.3 POST /api/genres",
+      "status": 403,
+      "responseTimeMs": 8,
+      "assertions": [
+        {
+          "name": "Status 403",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "3.4 POST /api/genres",
+      "status": 409,
+      "responseTimeMs": 86,
+      "assertions": [
+        {
+          "name": "Status 409",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "3.5 PUT /api/genres/{{genreId}}",
+      "status": 200,
+      "responseTimeMs": 65,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "3.6 DELETE /api/genres/{{seedGenreScifiId}}",
+      "status": 409,
+      "responseTimeMs": 30,
+      "assertions": [
+        {
+          "name": "Status 409",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "3.7 POST /api/rooms",
+      "status": 201,
+      "responseTimeMs": 214,
+      "assertions": [
+        {
+          "name": "Status 201",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "3.8 GET /api/rooms",
+      "status": 401,
+      "responseTimeMs": 6,
+      "assertions": [
+        {
+          "name": "Status 401",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "3.9 POST /api/rooms",
+      "status": 400,
+      "responseTimeMs": 21,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "3.10 POST /api/rooms",
+      "status": 400,
+      "responseTimeMs": 37,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "4.1 POST /api/movies",
+      "status": 201,
+      "responseTimeMs": 201,
+      "assertions": [
+        {
+          "name": "Status 201",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "4.2 GET /api/movies?keyword=galaxy",
+      "status": 200,
+      "responseTimeMs": 51,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "4.3 GET /api/movies?status=NOW_SHOWING&genreId={{seedGenreScifiId}}",
+      "status": 200,
+      "responseTimeMs": 87,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "4.4 PUT /api/movies/{{movieId}}",
+      "status": 200,
+      "responseTimeMs": 66,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "4.5 GET /api/movies/{{notFoundId}}",
+      "status": 404,
+      "responseTimeMs": 35,
+      "assertions": [
+        {
+          "name": "Status 404",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "4.6 POST /api/movies",
+      "status": 400,
+      "responseTimeMs": 19,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "4.7 POST /api/movies",
+      "status": 404,
+      "responseTimeMs": 28,
+      "assertions": [
+        {
+          "name": "Status 404",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "4.8 DELETE /api/genres/{{genreId}}",
+      "status": 409,
+      "responseTimeMs": 60,
+      "assertions": [
+        {
+          "name": "Status 409",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.1 POST /api/showtimes",
+      "status": 201,
+      "responseTimeMs": 150,
+      "assertions": [
+        {
+          "name": "Status 201",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.2 POST /api/showtimes",
+      "status": 409,
+      "responseTimeMs": 69,
+      "assertions": [
+        {
+          "name": "Status 409",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.3 POST /api/showtimes",
+      "status": 201,
+      "responseTimeMs": 143,
+      "assertions": [
+        {
+          "name": "Status 201",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.4 POST /api/showtimes",
+      "status": 400,
+      "responseTimeMs": 62,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.5 POST /api/showtimes",
+      "status": 400,
+      "responseTimeMs": 52,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.6 POST /api/showtimes",
+      "status": 400,
+      "responseTimeMs": 41,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.7 GET /api/showtimes?movieId={{movieId}}&date={{futureDate}}",
+      "status": 200,
+      "responseTimeMs": 67,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.8 GET /api/showtimes/{{showtimeId}}",
+      "status": 200,
+      "responseTimeMs": 129,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.9 DELETE /api/showtimes/{{showtime2Id}}",
+      "status": 204,
+      "responseTimeMs": 170,
+      "assertions": [
+        {
+          "name": "Status 204",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.10 GET /api/showtimes/{{showtime2Id}}",
+      "status": 200,
+      "responseTimeMs": 54,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.11 DELETE /api/rooms/{{roomId}}",
+      "status": 409,
+      "responseTimeMs": 28,
+      "assertions": [
+        {
+          "name": "Status 409",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.12 DELETE /api/movies/{{movieId}}",
+      "status": 409,
+      "responseTimeMs": 48,
+      "assertions": [
+        {
+          "name": "Status 409",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "5.13 POST /api/showtimes",
+      "status": 404,
+      "responseTimeMs": 18,
+      "assertions": [
+        {
+          "name": "Status 404",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.1 GET /api/bookings/showtimes/{{showtimeId}}/seats",
+      "status": 200,
+      "responseTimeMs": 271,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.2 POST /api/bookings",
+      "status": 201,
+      "responseTimeMs": 432,
+      "assertions": [
+        {
+          "name": "Status 201",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.3 POST /api/bookings",
+      "status": 409,
+      "responseTimeMs": 112,
+      "assertions": [
+        {
+          "name": "Status 409",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.4 POST /api/bookings",
+      "status": 400,
+      "responseTimeMs": 105,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.5 POST /api/bookings",
+      "status": 400,
+      "responseTimeMs": 121,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.6 POST /api/bookings",
+      "status": 400,
+      "responseTimeMs": 64,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.7 POST /api/bookings",
+      "status": 404,
+      "responseTimeMs": 66,
+      "assertions": [
+        {
+          "name": "Status 404",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.8 POST /api/bookings",
+      "status": 400,
+      "responseTimeMs": 112,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.9 POST /api/bookings",
+      "status": 400,
+      "responseTimeMs": 129,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.10 POST /api/bookings",
+      "status": 400,
+      "responseTimeMs": 44,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.11 POST /api/bookings",
+      "status": 403,
+      "responseTimeMs": 15,
+      "assertions": [
+        {
+          "name": "Status 403",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.12 POST /api/bookings",
+      "status": 401,
+      "responseTimeMs": 7,
+      "assertions": [
+        {
+          "name": "Status 401",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.13 POST /api/bookings",
+      "status": 201,
+      "responseTimeMs": 327,
+      "assertions": [
+        {
+          "name": "Status 201",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "6.14 GET /api/bookings/showtimes/{{showtimeId}}/seats",
+      "status": 200,
+      "responseTimeMs": 122,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "7.1 GET /api/bookings/my",
+      "status": 200,
+      "responseTimeMs": 197,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "7.2 GET /api/bookings/{{bookingId}}",
+      "status": 403,
+      "responseTimeMs": 67,
+      "assertions": [
+        {
+          "name": "Status 403",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "7.3 GET /api/bookings/{{bookingId}}",
+      "status": 200,
+      "responseTimeMs": 55,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "7.4 PUT /api/bookings/{{booking2Id}}/cancel",
+      "status": 403,
+      "responseTimeMs": 61,
+      "assertions": [
+        {
+          "name": "Status 403",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "7.5 PUT /api/bookings/{{booking2Id}}/cancel",
+      "status": 200,
+      "responseTimeMs": 521,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "7.6 PUT /api/bookings/{{booking2Id}}/cancel",
+      "status": 400,
+      "responseTimeMs": 60,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "7.7 POST /api/bookings",
+      "status": 201,
+      "responseTimeMs": 230,
+      "assertions": [
+        {
+          "name": "Status 201",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "7.8 GET /api/bookings",
+      "status": 200,
+      "responseTimeMs": 99,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "7.9 GET /api/bookings/my",
+      "status": 403,
+      "responseTimeMs": 6,
+      "assertions": [
+        {
+          "name": "Status 403",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "7.10 GET /api/bookings/99999",
+      "status": 404,
+      "responseTimeMs": 288,
+      "assertions": [
+        {
+          "name": "Status 404",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "8.1 GET /api/bookings/report?startDate={{today}}&endDate={{today}}",
+      "status": 200,
+      "responseTimeMs": 118,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "8.2 GET /api/bookings/report?startDate=2026-12-31&endDate=2026-01-01",
+      "status": 400,
+      "responseTimeMs": 43,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "8.3 GET /api/bookings/report?startDate={{today}}&endDate={{today}}",
+      "status": 403,
+      "responseTimeMs": 14,
+      "assertions": [
+        {
+          "name": "Status 403",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "8.4 GET /api/bookings/report?startDate={{today}}",
+      "status": 400,
+      "responseTimeMs": 35,
+      "assertions": [
+        {
+          "name": "Status 400",
+          "passed": true
+        },
+        {
+          "name": "Unified error body",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "8.5 GET /api/bookings/report?startDate=2020-01-01&endDate=2020-01-31",
+      "status": 200,
+      "responseTimeMs": 119,
+      "assertions": [
+        {
+          "name": "Status 200",
+          "passed": true
+        },
+        {
+          "name": "Business rules and response data",
+          "passed": true
+        }
+      ],
+      "passed": true
+    }
+  ]
+}
