@@ -1,0 +1,27 @@
+{
+  "sqlServer": {
+    "unicodeName": "Nguyễn Văn An (updated)",
+    "nameType": "nvarchar",
+    "flywayVersions": [
+      "1",
+      "2"
+    ],
+    "passed": true
+  },
+  "mongodb": {
+    "priceType": "Decimal128",
+    "genreUniqueIndex": true,
+    "roomUniqueIndex": true,
+    "passed": true
+  },
+  "mysql": {
+    "showtimeIdType": "varchar(24)",
+    "movieIdType": "varchar(24)",
+    "flywayVersions": [
+      "1",
+      "2"
+    ],
+    "activeSeatConstraint": true,
+    "passed": true
+  }
+}
