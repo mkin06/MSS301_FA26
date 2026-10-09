@@ -1,0 +1,7 @@
+**/target/
+**/build/
+**/.gradle/
+**/.idea/
+**/volume-data/
+**/docker/mysql/data/
+*.log
