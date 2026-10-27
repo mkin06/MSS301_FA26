@@ -1,0 +1,343 @@
+{
+  "info": {
+    "name": "MSS301 - Saga Demo - Manual failures",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "orderUrl",
+      "value": "http://localhost:8081",
+      "type": "string"
+    },
+    {
+      "key": "inventoryUrl",
+      "value": "http://localhost:8082",
+      "type": "string"
+    },
+    {
+      "key": "paymentUrl",
+      "value": "http://localhost:8083",
+      "type": "string"
+    },
+    {
+      "key": "kb1OrderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "kb2OrderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "kb3OrderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "kb4OrderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "kb5OrderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "kb6OrderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "kb8OrderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "stock_P1",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "stock_P2",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "bal_C1",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "bal_C2",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "directPaymentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "KB6 - payment-service bị tắt",
+      "item": [
+        {
+          "name": "[KB6] 1. Snapshot",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{inventoryUrl}}/api/inventory/products"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+                  "const setvar=(k,v)=>{pm.collectionVariables.set(k,v);if(pm.environment)pm.environment.set(k,v);};",
+                  "const getvar=k=>pm.variables.get(k);",
+                  "pm.response.json().forEach(p=>setvar(\"stock_\"+p.id,p.stock));\npm.sendRequest(getvar(\"paymentUrl\")+\"/api/payments/wallets\",(err,res)=>{\npm.test(\"Wallet endpoint responds\",()=>{pm.expect(err).to.be.null;pm.expect(res.code).to.eql(200);});\nif(!err&&res.code===200){ res.json().forEach(w=>setvar(\"bal_\"+w.customerId,w.balance)); }\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "[KB6] 2. Đặt hàng (payment-service phải dừng)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{orderUrl}}/api/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"C1\",\n  \"productId\": \"P2\",\n  \"quantity\": 1,\n  \"amount\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+                  "const setvar=(k,v)=>{pm.collectionVariables.set(k,v);if(pm.environment)pm.environment.set(k,v);};",
+                  "const getvar=k=>pm.variables.get(k);",
+                  "const o=pm.response.json();setvar(\"kb6OrderId\",o.id);\npm.test(\"Order status = CANCELLED\",()=>pm.expect(o.status).to.eql(\"CANCELLED\"));\npm.test(\"Saga status = COMPENSATED\",()=>pm.expect(o.sagaStatus).to.eql(\"COMPENSATED\"));\npm.test(\"Order id generated\",()=>pm.expect(o.id).to.be.above(0));\npm.test(\"Failure reason is preserved\",()=>pm.expect(o.failureReason).to.match(/^Service không phản hồi/));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "[KB6] 3. Kiểm tra (bật lại payment-service trước)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{inventoryUrl}}/api/inventory/products"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+                  "const setvar=(k,v)=>{pm.collectionVariables.set(k,v);if(pm.environment)pm.environment.set(k,v);};",
+                  "const getvar=k=>pm.variables.get(k);",
+                  "const stockDelta={};const balanceDelta={};\npm.response.json().forEach(p=>{const before=Number(getvar(\"stock_\"+p.id));pm.test(\"Stock \"+p.id+\" matches snapshot delta\",()=>pm.expect(p.stock).to.eql(before+(stockDelta[p.id]||0)));});\npm.sendRequest(getvar(\"paymentUrl\")+\"/api/payments/wallets\",(err,res)=>{\npm.test(\"Wallet endpoint responds\",()=>{pm.expect(err).to.be.null;pm.expect(res.code).to.eql(200);});\nif(!err&&res.code===200){ res.json().forEach(w=>{const before=Number(getvar(\"bal_\"+w.customerId));pm.test(\"Wallet \"+w.customerId+\" matches snapshot delta\",()=>pm.expect(w.balance).to.be.closeTo(before+(balanceDelta[w.customerId]||0),0.000001));}); }\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "[KB6] 4. Saga logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{orderUrl}}/api/orders/{{kb6OrderId}}/saga-logs"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+                  "const setvar=(k,v)=>{pm.collectionVariables.set(k,v);if(pm.environment)pm.environment.set(k,v);};",
+                  "const getvar=k=>pm.variables.get(k);",
+                  "const logs=pm.response.json();pm.test(\"Saga steps execute in the required order\",()=>pm.expect(logs.map(l=>l.step)).to.eql([\"CREATE_ORDER\", \"RESERVE_INVENTORY\", \"SAGA\", \"COMPENSATION\", \"CANCEL_ORDER\"]));pm.test(\"Saga timestamps are ISO strings\",()=>logs.forEach(l=>pm.expect(l.time).to.match(/^\\d{4}-\\d{2}-\\d{2}T/)));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "KB8 - Compensation cũng lỗi (tuỳ chọn)",
+      "item": [
+        {
+          "name": "[KB8] 1. Snapshot",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{inventoryUrl}}/api/inventory/products"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+                  "const setvar=(k,v)=>{pm.collectionVariables.set(k,v);if(pm.environment)pm.environment.set(k,v);};",
+                  "const getvar=k=>pm.variables.get(k);",
+                  "pm.response.json().forEach(p=>setvar(\"stock_\"+p.id,p.stock));\npm.sendRequest(getvar(\"paymentUrl\")+\"/api/payments/wallets\",(err,res)=>{\npm.test(\"Wallet endpoint responds\",()=>{pm.expect(err).to.be.null;pm.expect(res.code).to.eql(200);});\nif(!err&&res.code===200){ res.json().forEach(w=>setvar(\"bal_\"+w.customerId,w.balance)); }\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "[KB8] 2. Đặt hàng (delay 15s; dừng inventory và payment sau khi reserve)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{orderUrl}}/api/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"C1\",\n  \"productId\": \"P2\",\n  \"quantity\": 1,\n  \"amount\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+                  "const setvar=(k,v)=>{pm.collectionVariables.set(k,v);if(pm.environment)pm.environment.set(k,v);};",
+                  "const getvar=k=>pm.variables.get(k);",
+                  "const o=pm.response.json();setvar(\"kb8OrderId\",o.id);\npm.test(\"Order status = PENDING\",()=>pm.expect(o.status).to.eql(\"PENDING\"));\npm.test(\"Saga status = COMPENSATING\",()=>pm.expect(o.sagaStatus).to.eql(\"COMPENSATING\"));\npm.test(\"Order id generated\",()=>pm.expect(o.id).to.be.above(0));\npm.test(\"Failure reason is preserved\",()=>pm.expect(o.failureReason).to.match(/^Service không phản hồi/));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "[KB8] 3. Saga logs (sau khi bật lại services)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{orderUrl}}/api/orders/{{kb8OrderId}}/saga-logs"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+                  "const setvar=(k,v)=>{pm.collectionVariables.set(k,v);if(pm.environment)pm.environment.set(k,v);};",
+                  "const getvar=k=>pm.variables.get(k);",
+                  "const logs=pm.response.json();pm.test(\"Three failed compensation attempts\",()=>pm.expect(logs.filter(l=>l.step===\"COMPENSATION\"&&l.result===\"FAILED\")).to.have.lengthOf(3));pm.test(\"No false cancellation\",()=>pm.expect(logs.some(l=>l.step===\"CANCEL_ORDER\")).to.be.false);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "[KB8] 4. Stock remains held",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{inventoryUrl}}/api/inventory/products"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+                  "const setvar=(k,v)=>{pm.collectionVariables.set(k,v);if(pm.environment)pm.environment.set(k,v);};",
+                  "const getvar=k=>pm.variables.get(k);",
+                  "const stockDelta={\"P2\": -1};const balanceDelta={};\npm.response.json().forEach(p=>{const before=Number(getvar(\"stock_\"+p.id));pm.test(\"Stock \"+p.id+\" matches snapshot delta\",()=>pm.expect(p.stock).to.eql(before+(stockDelta[p.id]||0)));});\npm.sendRequest(getvar(\"paymentUrl\")+\"/api/payments/wallets\",(err,res)=>{\npm.test(\"Wallet endpoint responds\",()=>{pm.expect(err).to.be.null;pm.expect(res.code).to.eql(200);});\nif(!err&&res.code===200){ res.json().forEach(w=>{const before=Number(getvar(\"bal_\"+w.customerId));pm.test(\"Wallet \"+w.customerId+\" matches snapshot delta\",()=>pm.expect(w.balance).to.be.closeTo(before+(balanceDelta[w.customerId]||0),0.000001));}); }\n});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "[KB8] 5. Manually release held stock",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{inventoryUrl}}/api/inventory/release/{{kb8OrderId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+                  "const setvar=(k,v)=>{pm.collectionVariables.set(k,v);if(pm.environment)pm.environment.set(k,v);};",
+                  "const getvar=k=>pm.variables.get(k);",
+                  "pm.test(\"Compensation response\",()=>pm.expect(pm.response.text().replace(/\"/g,\"\")).to.eql(\"RELEASED\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "[KB8] 6. Stock restored (order still requires recovery)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{inventoryUrl}}/api/inventory/products"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+                  "const setvar=(k,v)=>{pm.collectionVariables.set(k,v);if(pm.environment)pm.environment.set(k,v);};",
+                  "const getvar=k=>pm.variables.get(k);",
+                  "const stockDelta={};const balanceDelta={};\npm.response.json().forEach(p=>{const before=Number(getvar(\"stock_\"+p.id));pm.test(\"Stock \"+p.id+\" matches snapshot delta\",()=>pm.expect(p.stock).to.eql(before+(stockDelta[p.id]||0)));});\npm.sendRequest(getvar(\"paymentUrl\")+\"/api/payments/wallets\",(err,res)=>{\npm.test(\"Wallet endpoint responds\",()=>{pm.expect(err).to.be.null;pm.expect(res.code).to.eql(200);});\nif(!err&&res.code===200){ res.json().forEach(w=>{const before=Number(getvar(\"bal_\"+w.customerId));pm.test(\"Wallet \"+w.customerId+\" matches snapshot delta\",()=>pm.expect(w.balance).to.be.closeTo(before+(balanceDelta[w.customerId]||0),0.000001));}); }\n});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
