@@ -1,0 +1,328 @@
+{
+  "verifiedAt": "2026-10-29T15:18:22.321177+00:00",
+  "studentId": "DE190468",
+  "unitTests": 112,
+  "unitModules": [
+    {
+      "module": "DE190468PostService",
+      "suites": [
+        {
+          "name": "fu.de190468.post.CommonContractTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "apiTimestampIsUtcWithSecondPrecision",
+            "paginationRejectsInvalidBoundaries",
+            "nameSearchTreatsWildcardsAsLiterals"
+          ]
+        },
+        {
+          "name": "fu.de190468.post.DateOnlyConverterTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "calendarDayRoundTripsInDifferentServerTimeZones",
+            "nullableConversionIsSupported"
+          ]
+        },
+        {
+          "name": "fu.de190468.post.DtoValidationTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[1]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[2]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[3]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[4]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[5]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[6]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[7]",
+            "completeCreateIsValid",
+            "partialUpdateAllowsOmittedFields",
+            "createRequiresAllMandatoryFields"
+          ]
+        },
+        {
+          "name": "fu.de190468.post.PostServiceTest",
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "remoteEmptySuccessfulEnvelopeIsServerFailure",
+            "missingBookingOperationsReturn404",
+            "nonexistentParentFeign404Becomes404",
+            "limitIsCheckedAgainstRemoteParent",
+            "createComputesDaysAndIgnoresClientAmountAndStatus",
+            "inactiveParentReturns400AndNeverSaves",
+            "amountOverflowIsValidationFailure",
+            "invalidPartialDatesNeverDirtyManagedEntity",
+            "deleteCancelsWithoutDeletingAndWithoutRemoteCall",
+            "partialUpdateUsesCurrentRateAndPreservesOmittedDates",
+            "remoteErrorEnvelopeIsNotMisreportedAs404",
+            "detailEmbedsFullRemoteObject",
+            "partialUpdateRevalidatesRemoteCapacity",
+            "partialUpdateCanChangeParentId",
+            "remoteOutageIsNotMisreportedAsMissingParent",
+            "invalidDatesAreRejectedBeforeCallingRemoteService"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "DE190468UserService",
+      "suites": [
+        {
+          "name": "fu.de190468.user.CommonContractTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "apiTimestampIsUtcWithSecondPrecision",
+            "paginationRejectsInvalidBoundaries",
+            "nameSearchTreatsWildcardsAsLiterals"
+          ]
+        },
+        {
+          "name": "fu.de190468.user.DtoValidationTest",
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[1]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[2]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[3]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[4]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[5]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[6]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[7]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[8]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[9]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[10]",
+            "completeCreateIsValid",
+            "partialUpdateAllowsOmittedFields",
+            "createRequiresAllMandatoryFields"
+          ]
+        },
+        {
+          "name": "fu.de190468.user.UserServiceTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "deleteIsSoftAndDoesNotRemoveRow",
+            "allMissingOperationsReturn404",
+            "createSetsDefaultStatusAndReturnsGeneratedId",
+            "updateExcludesItsOwnIdFromDuplicateCheck",
+            "partialUpdateRetainsOmittedFields",
+            "invalidEnumFilterReturns406",
+            "duplicateCreateReturns226WithoutSaving",
+            "databaseUniqueRaceAlsoReturns226",
+            "duplicateUpdateDoesNotMutateEntity"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "DE190468ReservationService",
+      "suites": [
+        {
+          "name": "fu.de190468.reservation.CommonContractTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "apiTimestampIsUtcWithSecondPrecision",
+            "paginationRejectsInvalidBoundaries",
+            "nameSearchTreatsWildcardsAsLiterals"
+          ]
+        },
+        {
+          "name": "fu.de190468.reservation.DateOnlyConverterTest",
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "calendarDayRoundTripsInDifferentServerTimeZones",
+            "nullableConversionIsSupported"
+          ]
+        },
+        {
+          "name": "fu.de190468.reservation.DtoValidationTest",
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[1]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[2]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[3]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[4]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[5]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[6]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[7]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[8]",
+            "completeCreateIsValid",
+            "partialUpdateAllowsOmittedFields",
+            "createRequiresAllMandatoryFields"
+          ]
+        },
+        {
+          "name": "fu.de190468.reservation.ReservationServiceTest",
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "remoteEmptySuccessfulEnvelopeIsServerFailure",
+            "missingBookingOperationsReturn404",
+            "nonexistentParentFeign404Becomes404",
+            "limitIsCheckedAgainstRemoteParent",
+            "createComputesDaysAndIgnoresClientAmountAndStatus",
+            "inactiveParentReturns400AndNeverSaves",
+            "amountOverflowIsValidationFailure",
+            "invalidPartialDatesNeverDirtyManagedEntity",
+            "deleteCancelsWithoutDeletingAndWithoutRemoteCall",
+            "partialUpdateUsesCurrentRateAndPreservesOmittedDates",
+            "remoteErrorEnvelopeIsNotMisreportedAs404",
+            "detailEmbedsFullRemoteObject",
+            "partialUpdateRevalidatesRemoteCapacity",
+            "partialUpdateCanChangeParentId",
+            "remoteOutageIsNotMisreportedAsMissingParent",
+            "invalidDatesAreRejectedBeforeCallingRemoteService"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "DE190468RoomService",
+      "suites": [
+        {
+          "name": "fu.de190468.room.CommonContractTest",
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "apiTimestampIsUtcWithSecondPrecision",
+            "paginationRejectsInvalidBoundaries",
+            "nameSearchTreatsWildcardsAsLiterals"
+          ]
+        },
+        {
+          "name": "fu.de190468.room.DtoValidationTest",
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[1]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[2]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[3]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[4]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[5]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[6]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[7]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[8]",
+            "invalidFieldsAreRejectedForCreateAndUpdate(String, Consumer)[9]",
+            "completeCreateIsValid",
+            "partialUpdateAllowsOmittedFields",
+            "createRequiresAllMandatoryFields"
+          ]
+        },
+        {
+          "name": "fu.de190468.room.RoomServiceTest",
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "cases": [
+            "deleteIsSoftAndDoesNotRemoveRow",
+            "allMissingOperationsReturn404",
+            "createSetsDefaultStatusAndReturnsGeneratedId",
+            "updateExcludesItsOwnIdFromDuplicateCheck",
+            "partialUpdateRetainsOmittedFields",
+            "invalidEnumFilterReturns406",
+            "duplicateCreateReturns226WithoutSaving",
+            "databaseUniqueRaceAlsoReturns226",
+            "duplicateUpdateDoesNotMutateEntity"
+          ]
+        }
+      ]
+    }
+  ],
+  "httpChecks": 164,
+  "newman": [
+    {
+      "suite": "Media",
+      "requests": {
+        "total": 38,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 150,
+        "pending": 0,
+        "failed": 0
+      },
+      "timings": {
+        "responseAverage": 40.10526315789474,
+        "responseMin": 11,
+        "responseMax": 468,
+        "responseSd": 79.96373831921177,
+        "dnsAverage": 0,
+        "dnsMin": 0,
+        "dnsMax": 0,
+        "dnsSd": 0,
+        "firstByteAverage": 0,
+        "firstByteMin": 0,
+        "firstByteMax": 0,
+        "firstByteSd": 0,
+        "started": 1793287001315,
+        "completed": 1793287006045
+      },
+      "failures": []
+    },
+    {
+      "suite": "Hotel",
+      "requests": {
+        "total": 37,
+        "pending": 0,
+        "failed": 0
+      },
+      "assertions": {
+        "total": 146,
+        "pending": 0,
+        "failed": 0
+      },
+      "timings": {
+        "responseAverage": 41.2972972972973,
+        "responseMin": 11,
+        "responseMax": 452,
+        "responseSd": 77.71808543386929,
+        "dnsAverage": 0,
+        "dnsMin": 0,
+        "dnsMax": 0,
+        "dnsSd": 0,
+        "firstByteAverage": 0,
+        "firstByteMin": 0,
+        "firstByteMax": 0,
+        "firstByteSd": 0,
+        "started": 1793287023181,
+        "completed": 1793287027832
+      },
+      "failures": []
+    }
+  ]
+}
