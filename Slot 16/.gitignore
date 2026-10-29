@@ -1,0 +1,7 @@
+**/target/
+**/.idea/
+**/*.iml
+**/__pycache__/
+.work/
+dist/
+*.log

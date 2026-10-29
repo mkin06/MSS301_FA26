@@ -1,0 +1,1286 @@
+{
+  "info": {
+    "name": "Slot16 Hotel - DE190468",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Run all requests in order. Creates uniquely named test records; does not reset or delete existing data."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "01. Create rooms",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomNumber\": \"{{runId}}\",\n  \"pricePerNight\": 500000,\n  \"capacity\": 3,\n  \"floor\": 1,\n  \"roomType\": \"DOUBLE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set(\"runId\",\"p\"+Date.now()+Math.floor(Math.random()*1000));"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.collectionVariables.set(\"masterId\",r.data.roomId);",
+              "pm.test(\"Default status\",()=>pm.expect(r.data.status).to.eql(\"AVAILABLE\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Duplicate roomNumber",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomNumber\": \"{{runId}}\",\n  \"pricePerNight\": 500000,\n  \"capacity\": 3,\n  \"floor\": 1,\n  \"roomType\": \"DOUBLE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 226\", () => pm.response.to.have.status(226));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 3\", () => pm.expect(r.status).to.eql(3));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Create second master",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomNumber\": \"{{runId}}b\",\n  \"pricePerNight\": 500000,\n  \"capacity\": 3,\n  \"floor\": 1,\n  \"roomType\": \"DOUBLE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.collectionVariables.set(\"secondId\",r.data.roomId);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Partial update preserves omitted fields",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms/{{masterId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"floor\": 2\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"Kept original key\",()=>pm.expect(r.data.roomNumber).to.eql(pm.collectionVariables.get(\"runId\")));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05. Duplicate update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms/{{masterId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomNumber\": \"{{runId}}b\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 226\", () => pm.response.to.have.status(226));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 3\", () => pm.expect(r.status).to.eql(3));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06. Same unique key update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms/{{masterId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomNumber\": \"{{runId}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07. Invalid roomNumber",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomNumber\": \" \",\n  \"pricePerNight\": 500000,\n  \"capacity\": 3,\n  \"floor\": 1,\n  \"roomType\": \"DOUBLE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08. Invalid roomType",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomNumber\": \"{{runId}}\",\n  \"pricePerNight\": 500000,\n  \"capacity\": 3,\n  \"floor\": 1,\n  \"roomType\": \"INVALID\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09. Invalid pricePerNight",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomNumber\": \"{{runId}}\",\n  \"pricePerNight\": 0,\n  \"capacity\": 3,\n  \"floor\": 1,\n  \"roomType\": \"DOUBLE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Invalid capacity",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomNumber\": \"{{runId}}\",\n  \"pricePerNight\": 500000,\n  \"capacity\": 11,\n  \"floor\": 1,\n  \"roomType\": \"DOUBLE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. Invalid floor",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomNumber\": \"{{runId}}\",\n  \"pricePerNight\": 500000,\n  \"capacity\": 3,\n  \"floor\": 0,\n  \"roomType\": \"DOUBLE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12. Invalid status",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomNumber\": \"{{runId}}\",\n  \"pricePerNight\": 500000,\n  \"capacity\": 3,\n  \"floor\": 1,\n  \"roomType\": \"DOUBLE\",\n  \"status\": \"INVALID\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "13. Missing mandatory master fields",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "14. Master not found",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms/2147483647"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 4\", () => pm.expect(r.status).to.eql(4));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "15. List filter and pagination",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms?page=0&size=1&roomType=DOUBLE&status=AVAILABLE"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"Page metadata\",()=>{pm.expect(r.data.page).to.eql(0);pm.expect(r.data.size).to.eql(1);pm.expect(r.data.first).to.eql(true);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "16. Page too large",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms?size=101"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "17. Negative page",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms?page=-1"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "18. Create booking via OpenFeign",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guestName\": \"{{runId}} Shop\",\n  \"guestEmail\": \"ads@example.com\",\n  \"guestPhone\": \"0900000000\",\n  \"checkInDate\": \"25/07/2026\",\n  \"checkOutDate\": \"28/07/2026\",\n  \"numberOfGuests\": 2,\n  \"roomId\": {{masterId}},\n  \"totalAmount\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.collectionVariables.set(\"bookingId\",r.data.reservationId);",
+              "pm.test(\"Calculated total\",()=>pm.expect(r.data.totalAmount).to.eql(1500000));",
+              "pm.test(\"Default status\",()=>pm.expect(r.data.status).to.eql(\"CONFIRMED\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "19. Detail embeds remote object",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations/{{bookingId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"Remote object\",()=>pm.expect(r.data.room.roomId).to.eql(Number(pm.collectionVariables.get(\"masterId\"))));",
+              "pm.test(\"Date preserved\",()=>pm.expect(r.data.checkInDate).to.eql(\"25/07/2026\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "20. Invalid booking numberOfGuests",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guestName\": \"{{runId}} Shop\",\n  \"guestEmail\": \"ads@example.com\",\n  \"guestPhone\": \"0900000000\",\n  \"checkInDate\": \"25/07/2026\",\n  \"checkOutDate\": \"28/07/2026\",\n  \"numberOfGuests\": 4,\n  \"roomId\": {{masterId}},\n  \"totalAmount\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "21. Invalid booking guestEmail",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guestName\": \"{{runId}} Shop\",\n  \"guestEmail\": \"bad\",\n  \"guestPhone\": \"0900000000\",\n  \"checkInDate\": \"25/07/2026\",\n  \"checkOutDate\": \"28/07/2026\",\n  \"numberOfGuests\": 2,\n  \"roomId\": {{masterId}},\n  \"totalAmount\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "22. Invalid booking checkInDate",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guestName\": \"{{runId}} Shop\",\n  \"guestEmail\": \"ads@example.com\",\n  \"guestPhone\": \"0900000000\",\n  \"checkInDate\": \"31/02/2026\",\n  \"checkOutDate\": \"28/07/2026\",\n  \"numberOfGuests\": 2,\n  \"roomId\": {{masterId}},\n  \"totalAmount\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "23. Invalid booking checkOutDate",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guestName\": \"{{runId}} Shop\",\n  \"guestEmail\": \"ads@example.com\",\n  \"guestPhone\": \"0900000000\",\n  \"checkInDate\": \"25/07/2026\",\n  \"checkOutDate\": \"25/07/2026\",\n  \"numberOfGuests\": 2,\n  \"roomId\": {{masterId}},\n  \"totalAmount\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "24. Feign 404 maps to status 4",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guestName\": \"{{runId}} Shop\",\n  \"guestEmail\": \"ads@example.com\",\n  \"guestPhone\": \"0900000000\",\n  \"checkInDate\": \"25/07/2026\",\n  \"checkOutDate\": \"28/07/2026\",\n  \"numberOfGuests\": 2,\n  \"roomId\": 2147483647,\n  \"totalAmount\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 4\", () => pm.expect(r.status).to.eql(4));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "25. Make second master unavailable",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms/{{secondId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"MAINTENANCE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "26. Unavailable remote master",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guestName\": \"{{runId}} Shop\",\n  \"guestEmail\": \"ads@example.com\",\n  \"guestPhone\": \"0900000000\",\n  \"checkInDate\": \"25/07/2026\",\n  \"checkOutDate\": \"28/07/2026\",\n  \"numberOfGuests\": 2,\n  \"roomId\": {{secondId}},\n  \"totalAmount\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 5\", () => pm.expect(r.status).to.eql(5));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "27. Reject invalid partial dates",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations/{{bookingId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"checkOutDate\": \"24/07/2026\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "28. Failed update does not mutate dates",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations/{{bookingId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"Date unchanged\",()=>pm.expect(r.data.checkOutDate).to.eql(\"28/07/2026\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "29. Change current price",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms/{{masterId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pricePerNight\": 600000\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "30. Recalculate using current price",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations/{{bookingId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guestName\": \"{{runId}} Edited\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"Recalculated total\",()=>pm.expect(r.data.totalAmount).to.eql(1800000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "31. Filtered booking page",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations?guestName={{runId}}&status=CONFIRMED"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"One matching record\",()=>pm.expect(r.data.totalElements).to.eql(1));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "32. Booking page too large",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations?size=101"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "33. Booking not found",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations/2147483647"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 4\", () => pm.expect(r.status).to.eql(4));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "34. Cancel booking",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations/{{bookingId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "35. Cancelled row retained",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations/{{bookingId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"CANCELLED\",()=>pm.expect(r.data.status).to.eql(\"CANCELLED\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "36. Soft delete master",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/rooms/{{masterId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "37. Deleted master cannot receive bookings",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/reservations",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"guestName\": \"{{runId}} Shop\",\n  \"guestEmail\": \"ads@example.com\",\n  \"guestPhone\": \"0900000000\",\n  \"checkInDate\": \"25/07/2026\",\n  \"checkOutDate\": \"28/07/2026\",\n  \"numberOfGuests\": 2,\n  \"roomId\": {{masterId}},\n  \"totalAmount\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 5\", () => pm.expect(r.status).to.eql(5));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

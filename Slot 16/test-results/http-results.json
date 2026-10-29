@@ -1,0 +1,1413 @@
+{
+  "executedAt": "2026-10-29T15:16:24.620473+00:00",
+  "checksPassed": 164,
+  "testPrefix": "t6c41c3f7e",
+  "checks": [
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew gateway OpenAPI",
+      "method": "GET",
+      "path": "/v3/api-docs",
+      "http": 200,
+      "status": null,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew master OpenAPI",
+      "method": "GET",
+      "path": "/openapi/users",
+      "http": 200,
+      "status": null,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew booking OpenAPI",
+      "method": "GET",
+      "path": "/openapi/posts",
+      "http": 200,
+      "status": null,
+      "passed": true
+    },
+    {
+      "scenario": "DeThiSampleNew swagger 18080",
+      "passed": true
+    },
+    {
+      "scenario": "DeThiSampleNew swagger 18081",
+      "passed": true
+    },
+    {
+      "scenario": "DeThiSampleNew swagger 18082",
+      "passed": true
+    },
+    {
+      "scenario": "DeThiSampleNew CORS preflight 18080",
+      "passed": true
+    },
+    {
+      "scenario": "DeThiSampleNew CORS preflight 18081",
+      "passed": true
+    },
+    {
+      "scenario": "DeThiSampleNew CORS preflight 18082",
+      "passed": true
+    },
+    {
+      "scenario": "DeThiSampleNew gateway CORS response has no duplicates",
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew create master defaults",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 201,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew duplicate master",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 226,
+      "status": 3,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew master detail",
+      "method": "GET",
+      "path": "/api/users/16",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew second master",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 201,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew duplicate update",
+      "method": "PUT",
+      "path": "/api/users/16",
+      "http": 226,
+      "status": 3,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew update same unique key",
+      "method": "PUT",
+      "path": "/api/users/16",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew partial master",
+      "method": "PUT",
+      "path": "/api/users/16",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid username ",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid username    ",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid username xxxxxxxxxxxxxxxxxxxxxxxx",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid ratePerPost 0",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid ratePerPost -1",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid ratePerPost 1.123",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid ratePerPost 10000000000000000",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid maxDailyPosts 0",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid maxDailyPosts 11",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid level 0",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid role INVALID",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid status INVALID",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid email bad",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid email aaaaaaaaaaaaaaaaaaaaaaaa",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew missing mandatory master",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew reject fractional integer master",
+      "method": "POST",
+      "path": "/api/users",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid partial blank",
+      "method": "PUT",
+      "path": "/api/users/16",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid list /api/users?page=-1",
+      "method": "GET",
+      "path": "/api/users?page=-1",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid list /api/users?size=0",
+      "method": "GET",
+      "path": "/api/users?size=0",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid list /api/users?size=101",
+      "method": "GET",
+      "path": "/api/users?size=101",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid list /api/users?page=abc",
+      "method": "GET",
+      "path": "/api/users?page=abc",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid list /api/users?role=INVALID",
+      "method": "GET",
+      "path": "/api/users?role=INVALID",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid list /api/users?status=INVALID",
+      "method": "GET",
+      "path": "/api/users?status=INVALID",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew filtered paginated master",
+      "method": "GET",
+      "path": "/api/users?role=CREATOR&status=ACTIVE&size=1&page=0",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew missing master GET",
+      "method": "GET",
+      "path": "/api/users/2147483647",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew missing master PUT",
+      "method": "PUT",
+      "path": "/api/users/2147483647",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew missing master DELETE",
+      "method": "DELETE",
+      "path": "/api/users/2147483647",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew create booking via Feign",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 201,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew booking detail embeds remote",
+      "method": "GET",
+      "path": "/api/posts/7",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking advertiserName ",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking advertiserEmail bad",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking advertiserPhone  ",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking advertiserPhone 000000000000000000000",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking numberOfPosts 0",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking numberOfPosts 4",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking startDate 2026-07-25",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking startDate 31/02/2026",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking endDate 25/07/2026",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking endDate 24/07/2026",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking status INVALID",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew missing mandatory booking",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew reject fractional integer booking",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew Feign parent not found",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew set parent unavailable",
+      "method": "PUT",
+      "path": "/api/users/17",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew nonavailable parent",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 400,
+      "status": 5,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid partial dates",
+      "method": "PUT",
+      "path": "/api/posts/7",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid partial count",
+      "method": "PUT",
+      "path": "/api/posts/7",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid update does not change SQL row",
+      "method": "GET",
+      "path": "/api/posts/7",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew update current parent rate",
+      "method": "PUT",
+      "path": "/api/users/16",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew partial booking uses current rate",
+      "method": "PUT",
+      "path": "/api/posts/7",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew partial booking new effective dates",
+      "method": "PUT",
+      "path": "/api/posts/7",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew activate second parent",
+      "method": "PUT",
+      "path": "/api/users/17",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew update booking parent",
+      "method": "PUT",
+      "path": "/api/posts/7",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew filtered booking page",
+      "method": "GET",
+      "path": "/api/posts?advertiserName=t6c41c3f7e&status=SCHEDULED&size=100",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking list size=101",
+      "method": "GET",
+      "path": "/api/posts?size=101",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking list page=-1",
+      "method": "GET",
+      "path": "/api/posts?page=-1",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew invalid booking list status=INVALID",
+      "method": "GET",
+      "path": "/api/posts?status=INVALID",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew missing booking GET",
+      "method": "GET",
+      "path": "/api/posts/2147483647",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew missing booking PUT",
+      "method": "PUT",
+      "path": "/api/posts/2147483647",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew missing booking DELETE",
+      "method": "DELETE",
+      "path": "/api/posts/2147483647",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew cancel soft delete",
+      "method": "DELETE",
+      "path": "/api/posts/7",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew cancelled row retained",
+      "method": "GET",
+      "path": "/api/posts/7",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew deactivate master",
+      "method": "DELETE",
+      "path": "/api/users/16",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew master soft deleted row retained",
+      "method": "GET",
+      "path": "/api/users/16",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew deactivated parent blocked",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 400,
+      "status": 5,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThiSampleNew parent service offline",
+      "method": "POST",
+      "path": "/api/posts",
+      "http": 500,
+      "status": 0,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 gateway OpenAPI",
+      "method": "GET",
+      "path": "/v3/api-docs",
+      "http": 200,
+      "status": null,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 master OpenAPI",
+      "method": "GET",
+      "path": "/openapi/rooms",
+      "http": 200,
+      "status": null,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 booking OpenAPI",
+      "method": "GET",
+      "path": "/openapi/reservations",
+      "http": 200,
+      "status": null,
+      "passed": true
+    },
+    {
+      "scenario": "DeThi_SU26 swagger 18080",
+      "passed": true
+    },
+    {
+      "scenario": "DeThi_SU26 swagger 18081",
+      "passed": true
+    },
+    {
+      "scenario": "DeThi_SU26 swagger 18082",
+      "passed": true
+    },
+    {
+      "scenario": "DeThi_SU26 CORS preflight 18080",
+      "passed": true
+    },
+    {
+      "scenario": "DeThi_SU26 CORS preflight 18081",
+      "passed": true
+    },
+    {
+      "scenario": "DeThi_SU26 CORS preflight 18082",
+      "passed": true
+    },
+    {
+      "scenario": "DeThi_SU26 gateway CORS response has no duplicates",
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 create master defaults",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 201,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 duplicate master",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 226,
+      "status": 3,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 master detail",
+      "method": "GET",
+      "path": "/api/rooms/8",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 second master",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 201,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 duplicate update",
+      "method": "PUT",
+      "path": "/api/rooms/8",
+      "http": 226,
+      "status": 3,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 update same unique key",
+      "method": "PUT",
+      "path": "/api/rooms/8",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 partial master",
+      "method": "PUT",
+      "path": "/api/rooms/8",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid roomNumber ",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid roomNumber    ",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid roomNumber xxxxxxxxxxxxxxxxxxxxx",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid pricePerNight 0",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid pricePerNight -1",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid pricePerNight 1.123",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid pricePerNight 10000000000000000",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid capacity 0",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid capacity 11",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid floor 0",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid roomType INVALID",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid status INVALID",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 missing mandatory master",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 reject fractional integer master",
+      "method": "POST",
+      "path": "/api/rooms",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid partial blank",
+      "method": "PUT",
+      "path": "/api/rooms/8",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid list /api/rooms?page=-1",
+      "method": "GET",
+      "path": "/api/rooms?page=-1",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid list /api/rooms?size=0",
+      "method": "GET",
+      "path": "/api/rooms?size=0",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid list /api/rooms?size=101",
+      "method": "GET",
+      "path": "/api/rooms?size=101",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid list /api/rooms?page=abc",
+      "method": "GET",
+      "path": "/api/rooms?page=abc",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid list /api/rooms?roomType=INVALID",
+      "method": "GET",
+      "path": "/api/rooms?roomType=INVALID",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid list /api/rooms?status=INVALID",
+      "method": "GET",
+      "path": "/api/rooms?status=INVALID",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 filtered paginated master",
+      "method": "GET",
+      "path": "/api/rooms?roomType=DOUBLE&status=AVAILABLE&size=1&page=0",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 missing master GET",
+      "method": "GET",
+      "path": "/api/rooms/2147483647",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 missing master PUT",
+      "method": "PUT",
+      "path": "/api/rooms/2147483647",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 missing master DELETE",
+      "method": "DELETE",
+      "path": "/api/rooms/2147483647",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 create booking via Feign",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 201,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 booking detail embeds remote",
+      "method": "GET",
+      "path": "/api/reservations/3",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking guestName ",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking guestEmail bad",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking guestPhone  ",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking guestPhone 000000000000000000000",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking numberOfGuests 0",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking numberOfGuests 4",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking checkInDate 2026-07-25",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking checkInDate 31/02/2026",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking checkOutDate 25/07/2026",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking checkOutDate 24/07/2026",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking status INVALID",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 missing mandatory booking",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 reject fractional integer booking",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 Feign parent not found",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 set parent unavailable",
+      "method": "PUT",
+      "path": "/api/rooms/9",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 nonavailable parent",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 400,
+      "status": 5,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid partial dates",
+      "method": "PUT",
+      "path": "/api/reservations/3",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid partial count",
+      "method": "PUT",
+      "path": "/api/reservations/3",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid update does not change SQL row",
+      "method": "GET",
+      "path": "/api/reservations/3",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 update current parent rate",
+      "method": "PUT",
+      "path": "/api/rooms/8",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 partial booking uses current rate",
+      "method": "PUT",
+      "path": "/api/reservations/3",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 partial booking new effective dates",
+      "method": "PUT",
+      "path": "/api/reservations/3",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 activate second parent",
+      "method": "PUT",
+      "path": "/api/rooms/9",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 update booking parent",
+      "method": "PUT",
+      "path": "/api/reservations/3",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 filtered booking page",
+      "method": "GET",
+      "path": "/api/reservations?guestName=t6c41c3f7e&status=CONFIRMED&size=100",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking list size=101",
+      "method": "GET",
+      "path": "/api/reservations?size=101",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking list page=-1",
+      "method": "GET",
+      "path": "/api/reservations?page=-1",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 invalid booking list status=INVALID",
+      "method": "GET",
+      "path": "/api/reservations?status=INVALID",
+      "http": 406,
+      "status": 2,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 missing booking GET",
+      "method": "GET",
+      "path": "/api/reservations/2147483647",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 missing booking PUT",
+      "method": "PUT",
+      "path": "/api/reservations/2147483647",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 missing booking DELETE",
+      "method": "DELETE",
+      "path": "/api/reservations/2147483647",
+      "http": 404,
+      "status": 4,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 cancel soft delete",
+      "method": "DELETE",
+      "path": "/api/reservations/3",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 cancelled row retained",
+      "method": "GET",
+      "path": "/api/reservations/3",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 deactivate master",
+      "method": "DELETE",
+      "path": "/api/rooms/8",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 master soft deleted row retained",
+      "method": "GET",
+      "path": "/api/rooms/8",
+      "http": 200,
+      "status": 1,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 deactivated parent blocked",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 400,
+      "status": 5,
+      "passed": true
+    },
+    {
+      "suite": "http://localhost:18080",
+      "scenario": "DeThi_SU26 parent service offline",
+      "method": "POST",
+      "path": "/api/reservations",
+      "http": 500,
+      "status": 0,
+      "passed": true
+    }
+  ]
+}

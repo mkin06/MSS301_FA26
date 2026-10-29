@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>fu.de190468</groupId>
+    <artifactId>slot16</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>DeThiSampleNew/Code_PE/DE190468UserService</module>
+        <module>DeThiSampleNew/Code_PE/DE190468PostService</module>
+        <module>DeThiSampleNew/Code_PE/DE190468MediaGateway</module>
+        <module>DeThi_SU26/Code_PE/DE190468RoomService</module>
+        <module>DeThi_SU26/Code_PE/DE190468ReservationService</module>
+        <module>DeThi_SU26/Code_PE/DE190468HotelGateway</module>
+    </modules>
+</project>
