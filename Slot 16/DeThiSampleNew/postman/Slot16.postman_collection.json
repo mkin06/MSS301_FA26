@@ -1,0 +1,1323 @@
+{
+  "info": {
+    "name": "Slot16 Media - DE190468",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Run all requests in order. Creates uniquely named test records; does not reset or delete existing data."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "01. Create users",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{runId}}\",\n  \"ratePerPost\": 500000,\n  \"maxDailyPosts\": 3,\n  \"level\": 1,\n  \"role\": \"CREATOR\",\n  \"email\": \"a@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set(\"runId\",\"p\"+Date.now()+Math.floor(Math.random()*1000));"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.collectionVariables.set(\"masterId\",r.data.userId);",
+              "pm.test(\"Default status\",()=>pm.expect(r.data.status).to.eql(\"ACTIVE\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Duplicate username",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{runId}}\",\n  \"ratePerPost\": 500000,\n  \"maxDailyPosts\": 3,\n  \"level\": 1,\n  \"role\": \"CREATOR\",\n  \"email\": \"a@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 226\", () => pm.response.to.have.status(226));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 3\", () => pm.expect(r.status).to.eql(3));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Create second master",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{runId}}b\",\n  \"ratePerPost\": 500000,\n  \"maxDailyPosts\": 3,\n  \"level\": 1,\n  \"role\": \"CREATOR\",\n  \"email\": \"a@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.collectionVariables.set(\"secondId\",r.data.userId);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Partial update preserves omitted fields",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users/{{masterId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"level\": 2\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"Kept original key\",()=>pm.expect(r.data.username).to.eql(pm.collectionVariables.get(\"runId\")));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05. Duplicate update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users/{{masterId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{runId}}b\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 226\", () => pm.response.to.have.status(226));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 3\", () => pm.expect(r.status).to.eql(3));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06. Same unique key update",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users/{{masterId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{runId}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07. Invalid username",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \" \",\n  \"ratePerPost\": 500000,\n  \"maxDailyPosts\": 3,\n  \"level\": 1,\n  \"role\": \"CREATOR\",\n  \"email\": \"a@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08. Invalid role",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{runId}}\",\n  \"ratePerPost\": 500000,\n  \"maxDailyPosts\": 3,\n  \"level\": 1,\n  \"role\": \"INVALID\",\n  \"email\": \"a@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09. Invalid ratePerPost",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{runId}}\",\n  \"ratePerPost\": 0,\n  \"maxDailyPosts\": 3,\n  \"level\": 1,\n  \"role\": \"CREATOR\",\n  \"email\": \"a@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Invalid maxDailyPosts",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{runId}}\",\n  \"ratePerPost\": 500000,\n  \"maxDailyPosts\": 11,\n  \"level\": 1,\n  \"role\": \"CREATOR\",\n  \"email\": \"a@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. Invalid level",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{runId}}\",\n  \"ratePerPost\": 500000,\n  \"maxDailyPosts\": 3,\n  \"level\": 0,\n  \"role\": \"CREATOR\",\n  \"email\": \"a@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12. Invalid status",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{runId}}\",\n  \"ratePerPost\": 500000,\n  \"maxDailyPosts\": 3,\n  \"level\": 1,\n  \"role\": \"CREATOR\",\n  \"email\": \"a@example.com\",\n  \"status\": \"INVALID\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "13. Invalid email",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{runId}}\",\n  \"ratePerPost\": 500000,\n  \"maxDailyPosts\": 3,\n  \"level\": 1,\n  \"role\": \"CREATOR\",\n  \"email\": \"invalid\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "14. Missing mandatory master fields",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "15. Master not found",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users/2147483647"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 4\", () => pm.expect(r.status).to.eql(4));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "16. List filter and pagination",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users?page=0&size=1&role=CREATOR&status=ACTIVE"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"Page metadata\",()=>{pm.expect(r.data.page).to.eql(0);pm.expect(r.data.size).to.eql(1);pm.expect(r.data.first).to.eql(true);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "17. Page too large",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users?size=101"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "18. Negative page",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users?page=-1"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "19. Create booking via OpenFeign",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"advertiserName\": \"{{runId}} Shop\",\n  \"advertiserEmail\": \"ads@example.com\",\n  \"advertiserPhone\": \"0900000000\",\n  \"startDate\": \"25/07/2026\",\n  \"endDate\": \"28/07/2026\",\n  \"numberOfPosts\": 2,\n  \"userId\": {{masterId}},\n  \"totalCost\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.collectionVariables.set(\"bookingId\",r.data.postId);",
+              "pm.test(\"Calculated total\",()=>pm.expect(r.data.totalCost).to.eql(1500000));",
+              "pm.test(\"Default status\",()=>pm.expect(r.data.status).to.eql(\"SCHEDULED\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "20. Detail embeds remote object",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts/{{bookingId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"Remote object\",()=>pm.expect(r.data.user.userId).to.eql(Number(pm.collectionVariables.get(\"masterId\"))));",
+              "pm.test(\"Date preserved\",()=>pm.expect(r.data.startDate).to.eql(\"25/07/2026\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "21. Invalid booking numberOfPosts",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"advertiserName\": \"{{runId}} Shop\",\n  \"advertiserEmail\": \"ads@example.com\",\n  \"advertiserPhone\": \"0900000000\",\n  \"startDate\": \"25/07/2026\",\n  \"endDate\": \"28/07/2026\",\n  \"numberOfPosts\": 4,\n  \"userId\": {{masterId}},\n  \"totalCost\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "22. Invalid booking advertiserEmail",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"advertiserName\": \"{{runId}} Shop\",\n  \"advertiserEmail\": \"bad\",\n  \"advertiserPhone\": \"0900000000\",\n  \"startDate\": \"25/07/2026\",\n  \"endDate\": \"28/07/2026\",\n  \"numberOfPosts\": 2,\n  \"userId\": {{masterId}},\n  \"totalCost\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "23. Invalid booking startDate",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"advertiserName\": \"{{runId}} Shop\",\n  \"advertiserEmail\": \"ads@example.com\",\n  \"advertiserPhone\": \"0900000000\",\n  \"startDate\": \"31/02/2026\",\n  \"endDate\": \"28/07/2026\",\n  \"numberOfPosts\": 2,\n  \"userId\": {{masterId}},\n  \"totalCost\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "24. Invalid booking endDate",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"advertiserName\": \"{{runId}} Shop\",\n  \"advertiserEmail\": \"ads@example.com\",\n  \"advertiserPhone\": \"0900000000\",\n  \"startDate\": \"25/07/2026\",\n  \"endDate\": \"25/07/2026\",\n  \"numberOfPosts\": 2,\n  \"userId\": {{masterId}},\n  \"totalCost\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "25. Feign 404 maps to status 4",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"advertiserName\": \"{{runId}} Shop\",\n  \"advertiserEmail\": \"ads@example.com\",\n  \"advertiserPhone\": \"0900000000\",\n  \"startDate\": \"25/07/2026\",\n  \"endDate\": \"28/07/2026\",\n  \"numberOfPosts\": 2,\n  \"userId\": 2147483647,\n  \"totalCost\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 4\", () => pm.expect(r.status).to.eql(4));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "26. Make second master unavailable",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users/{{secondId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"SUSPENDED\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "27. Unavailable remote master",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"advertiserName\": \"{{runId}} Shop\",\n  \"advertiserEmail\": \"ads@example.com\",\n  \"advertiserPhone\": \"0900000000\",\n  \"startDate\": \"25/07/2026\",\n  \"endDate\": \"28/07/2026\",\n  \"numberOfPosts\": 2,\n  \"userId\": {{secondId}},\n  \"totalCost\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 5\", () => pm.expect(r.status).to.eql(5));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "28. Reject invalid partial dates",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts/{{bookingId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"endDate\": \"24/07/2026\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "29. Failed update does not mutate dates",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts/{{bookingId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"Date unchanged\",()=>pm.expect(r.data.endDate).to.eql(\"28/07/2026\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "30. Change current price",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users/{{masterId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ratePerPost\": 600000\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "31. Recalculate using current price",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts/{{bookingId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"advertiserName\": \"{{runId}} Edited\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"Recalculated total\",()=>pm.expect(r.data.totalCost).to.eql(1800000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "32. Filtered booking page",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts?advertiserName={{runId}}&status=SCHEDULED"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"One matching record\",()=>pm.expect(r.data.totalElements).to.eql(1));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "33. Booking page too large",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts?size=101"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 406\", () => pm.response.to.have.status(406));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 2\", () => pm.expect(r.status).to.eql(2));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "34. Booking not found",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts/2147483647"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 4\", () => pm.expect(r.status).to.eql(4));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "35. Cancel booking",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts/{{bookingId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "36. Cancelled row retained",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts/{{bookingId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"CANCELLED\",()=>pm.expect(r.data.status).to.eql(\"CANCELLED\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "37. Soft delete master",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/users/{{masterId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 1\", () => pm.expect(r.status).to.eql(1));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "38. Deleted master cannot receive bookings",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/posts",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"advertiserName\": \"{{runId}} Shop\",\n  \"advertiserEmail\": \"ads@example.com\",\n  \"advertiserPhone\": \"0900000000\",\n  \"startDate\": \"25/07/2026\",\n  \"endDate\": \"28/07/2026\",\n  \"numberOfPosts\": 2,\n  \"userId\": {{masterId}},\n  \"totalCost\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "const r=pm.response.json();",
+              "pm.test(\"status 5\", () => pm.expect(r.status).to.eql(5));",
+              "pm.test(\"UTC timestamp\",()=>pm.expect(r.timestamp).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/));",
+              "pm.test(\"No data on failure\",()=>pm.expect(r.data).to.eql(null));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
