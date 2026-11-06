@@ -44,4 +44,20 @@ public class BrandService {
         log.info("[SAGA-PARTICIPANT] UNASSIGN watch={} from brand={}",watchId,previous);
         return new AssignmentResponse(watchId,null,previous,"UNASSIGNED");
     }
+
+    // [TODO-5.5] Queries stay within DBBrand and use deterministic ordering.
+    @Transactional(readOnly=true) public List<BrandResponse> findAll() {
+        return brandRepository.findAll(org.springframework.data.domain.Sort.by("brandId")).stream().map(this::toResponse).toList();
+    }
+    @Transactional(readOnly=true) public BrandResponse findById(Integer id) {return toResponse(getBrand(id));}
+    @Transactional(readOnly=true) public boolean existsById(Integer id) {return brandRepository.existsById(id);}
+    @Transactional(readOnly=true) public BrandWatchesResponse watchesOf(Integer id) {
+        var brand=getBrand(id);
+        var ids=brandWatchRepository.findByBrandIdOrderByWatchIdAsc(id).stream().map(BrandWatch::getWatchId).toList();
+        return new BrandWatchesResponse(id,brand.getBrandName(),ids.size(),ids);
+    }
+    private WatchBrand getBrand(Integer id) {return brandRepository.findById(id).orElseThrow(()->missing(id));}
+    private BrandResponse toResponse(WatchBrand brand) {
+        return new BrandResponse(brand.getBrandId(),brand.getBrandName(),brand.getCountryOfOrigin(),brandWatchRepository.countByBrandId(brand.getBrandId()));
+    }
 }
