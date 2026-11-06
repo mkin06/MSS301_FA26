@@ -1,0 +1,30 @@
+[
+  {
+    "project": "MSAccount_DE190468",
+    "generatorUrl": "https://start.spring.io/starter.zip?type=maven-project&language=java&bootVersion=4.1.2&groupId=com.mss301&artifactId=ms-account&name=MSAccount_DE190468&packageName=com.mss301.account&packaging=jar&javaVersion=21&dependencies=web%2Cdata-jpa%2Csecurity%2Cvalidation%2Csqlserver%2Clombok",
+    "initializrBoot": "4.1.2",
+    "requiredBoot": "4.1.1",
+    "reason": "Initializr no longer offers 4.1.1; parent pinned to assignment version after generation."
+  },
+  {
+    "project": "MSBrand_DE190468",
+    "generatorUrl": "https://start.spring.io/starter.zip?type=maven-project&language=java&bootVersion=4.1.2&groupId=com.mss301&artifactId=ms-brand&name=MSBrand_DE190468&packageName=com.mss301.brand&packaging=jar&javaVersion=21&dependencies=web%2Cdata-jpa%2Cvalidation%2Csqlserver%2Clombok",
+    "initializrBoot": "4.1.2",
+    "requiredBoot": "4.1.1",
+    "reason": "Initializr no longer offers 4.1.1; parent pinned to assignment version after generation."
+  },
+  {
+    "project": "MSWatch_DE190468",
+    "generatorUrl": "https://start.spring.io/starter.zip?type=maven-project&language=java&bootVersion=4.1.2&groupId=com.mss301&artifactId=ms-watch&name=MSWatch_DE190468&packageName=com.mss301.watch&packaging=jar&javaVersion=21&dependencies=web%2Cdata-jpa%2Cvalidation%2Csqlserver%2Ccloud-feign%2Clombok",
+    "initializrBoot": "4.1.2",
+    "requiredBoot": "4.1.1",
+    "reason": "Initializr no longer offers 4.1.1; parent pinned to assignment version after generation."
+  },
+  {
+    "project": "APIGateway_DE190468",
+    "generatorUrl": "https://start.spring.io/starter.zip?type=maven-project&language=java&bootVersion=4.1.2&groupId=com.mss301&artifactId=api-gateway&name=APIGateway_DE190468&packageName=com.mss301.gateway&packaging=jar&javaVersion=21&dependencies=cloud-gateway-reactive%2Ccloud-resilience4j%2Clombok",
+    "initializrBoot": "4.1.2",
+    "requiredBoot": "4.1.1",
+    "reason": "Initializr no longer offers 4.1.1; parent pinned to assignment version after generation."
+  }
+]

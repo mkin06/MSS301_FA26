@@ -1,0 +1,167 @@
+{
+  "executedAt": "2026-11-06T05:59:24.349098+00:00",
+  "passed": 24,
+  "checks": [
+    {
+      "scenario": "MSAccount starts on 8081",
+      "passed": true
+    },
+    {
+      "scenario": "MSBrand starts on 8082",
+      "passed": true
+    },
+    {
+      "scenario": "MSWatch starts on 8083",
+      "passed": true
+    },
+    {
+      "scenario": "APIGateway starts on 8080",
+      "passed": true
+    },
+    {
+      "scenario": "Swagger enabled on 8081",
+      "passed": true
+    },
+    {
+      "scenario": "Swagger enabled on 8082",
+      "passed": true
+    },
+    {
+      "scenario": "Swagger enabled on 8083",
+      "passed": true
+    },
+    {
+      "scenario": "TODO6 watch API is not prematurely implemented",
+      "passed": true
+    },
+    {
+      "scenario": "TODO7 gateway does not expose internal brand routes",
+      "passed": true
+    },
+    {
+      "scenario": "Exact code-first table names",
+      "passed": true
+    },
+    {
+      "scenario": "Exact AccountID WatchID BrandID columns",
+      "passed": true
+    },
+    {
+      "scenario": "Five BCrypt accounts",
+      "passed": true
+    },
+    {
+      "scenario": "Exactly ten initial brand links",
+      "passed": true
+    },
+    {
+      "scenario": "DBWatch schema remains pending TODO6",
+      "passed": true
+    },
+    {
+      "scenario": "Postman collection has zero failures",
+      "passed": true
+    },
+    {
+      "scenario": "Concurrent first assign returns success for all callers",
+      "passed": true
+    },
+    {
+      "scenario": "Concurrent assign inserts only one SQL row",
+      "passed": true
+    },
+    {
+      "scenario": "Concurrent reassign remains idempotent without unique failures",
+      "passed": true
+    },
+    {
+      "scenario": "Restart does not recreate removed seed assignments",
+      "passed": true
+    },
+    {
+      "scenario": "Seed data restored after smoke tests",
+      "passed": true
+    },
+    {
+      "scenario": "Login after all tests",
+      "passed": true
+    },
+    {
+      "scenario": "Tokens remain local and are not written to evidence",
+      "passed": true
+    },
+    {
+      "scenario": "Account seed log records five accounts",
+      "passed": true
+    },
+    {
+      "scenario": "Participant logs show assign and unassign",
+      "passed": true
+    }
+  ],
+  "newman": {
+    "iterations": {
+      "total": 1,
+      "pending": 0,
+      "failed": 0
+    },
+    "items": {
+      "total": 29,
+      "pending": 0,
+      "failed": 0
+    },
+    "scripts": {
+      "total": 29,
+      "pending": 0,
+      "failed": 0
+    },
+    "prerequests": {
+      "total": 29,
+      "pending": 0,
+      "failed": 0
+    },
+    "requests": {
+      "total": 29,
+      "pending": 0,
+      "failed": 0
+    },
+    "tests": {
+      "total": 29,
+      "pending": 0,
+      "failed": 0
+    },
+    "assertions": {
+      "total": 77,
+      "pending": 0,
+      "failed": 0
+    },
+    "testScripts": {
+      "total": 29,
+      "pending": 0,
+      "failed": 0
+    },
+    "prerequestScripts": {
+      "total": 0,
+      "pending": 0,
+      "failed": 0
+    }
+  },
+  "sqlTables": [
+    "StoreAccounts",
+    "BrandWatches",
+    "WatchBrands"
+  ],
+  "sqlColumns": [
+    "AccountID",
+    "Email",
+    "IsActive",
+    "Password",
+    "Role",
+    "Username",
+    "Id",
+    "BrandID",
+    "UpdatedAt",
+    "WatchID"
+  ],
+  "scope": "TODO0 through TODO5; no orchestrator or gateway routing yet"
+}

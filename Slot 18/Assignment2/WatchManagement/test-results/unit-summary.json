@@ -1,0 +1,64 @@
+{
+  "tests": 30,
+  "failures": 0,
+  "errors": 0,
+  "reports": [
+    {
+      "name": "com.mss301.account.AuthServiceTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "unknownAccountIsUnauthorized",
+        "refreshRejectsInactiveAccount",
+        "wrongPasswordIsUnauthorized",
+        "refreshRejectsRemovedAccount",
+        "refreshRejectsAccessToken",
+        "refreshRejectsInvalidSubject",
+        "refreshReturnsNewPair",
+        "refreshRejectsMalformedAndAbsentToken",
+        "inactiveIsCheckedBeforePassword",
+        "loginReturnsTokensWithoutPassword",
+        "builderDefaultsToActive"
+      ]
+    },
+    {
+      "name": "com.mss301.account.JwtServiceTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "wrongSignatureIsRejected",
+        "refreshHasSevenDayLifetimeAndNoRole",
+        "invalidDurationIsRejected",
+        "shortSecretIsRejected",
+        "accessHasRoleTypeAndFifteenMinuteLifetime",
+        "malformedTokenIsRejected",
+        "refreshedTokensHaveDistinctIds",
+        "expiredTokenIsRejected"
+      ]
+    },
+    {
+      "name": "com.mss301.brand.BrandServiceTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "cases": [
+        "assignCreatesOneLink",
+        "missingBrandDoesNotWriteOrAcquireLock",
+        "missingBrandDetailIs404",
+        "unassignRemovesLinkAndReturnsPrevious",
+        "detailIncludesCount",
+        "missingBrandWatchListIs404",
+        "watchListUsesSortedRepositoryAndPreservesIds",
+        "repeatedAssignDoesNotChangeTimestampOrSave",
+        "invalidIdentifiersAreRejected",
+        "reassignmentUpdatesExistingRow",
+        "repeatedUnassignIsNoop"
+      ]
+    }
+  ]
+}
