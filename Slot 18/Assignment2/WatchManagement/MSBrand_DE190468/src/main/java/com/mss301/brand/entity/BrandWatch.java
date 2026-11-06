@@ -1,21 +1,22 @@
 package com.mss301.brand.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDateTime;
+import lombok.*;
 
 /**
  * Dữ liệu mà MSBrand sở hữu về quan hệ Brand - Watch.
- * <p>
- * Đây là phần "update other related Microservices" của đề bài: mỗi khi MSWatch
- * thêm / sửa / xoá đồng hồ, MSBrand phải cập nhật bảng này trong DB của chính nó (DBBrand).
- * Hai bảng Watches (DBWatch) và BrandWatches (DBBrand) nằm ở 2 database khác nhau,
- * nên KHÔNG thể dùng 1 transaction ACID -> phải dùng Saga để giữ chúng nhất quán.
+ *
+ * <p>Đây là phần "update other related Microservices" của đề bài: mỗi khi MSWatch thêm / sửa / xoá
+ * đồng hồ, MSBrand phải cập nhật bảng này trong DB của chính nó (DBBrand). Hai bảng Watches
+ * (DBWatch) và BrandWatches (DBBrand) nằm ở 2 database khác nhau, nên KHÔNG thể dùng 1 transaction
+ * ACID -> phải dùng Saga để giữ chúng nhất quán.
  */
 @Entity
-@Table(name = "BrandWatches",
-       uniqueConstraints = @UniqueConstraint(name = "UQ_BrandWatches_WatchID", columnNames = "WatchID"))
+@Table(
+    name = "BrandWatches",
+    uniqueConstraints =
+        @UniqueConstraint(name = "UQ_BrandWatches_WatchID", columnNames = "WatchID"))
 // [TODO-5.1: bảng BrandWatches (dữ liệu MSBrand sở hữu)]
 @Data
 @NoArgsConstructor
@@ -23,17 +24,17 @@ import java.time.LocalDateTime;
 @Builder
 public class BrandWatch {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "Id")
+  private Long id;
 
-    @Column(name = "WatchID", nullable = false)
-    private Integer watchId;          // 1 watch chỉ thuộc 1 brand -> unique
+  @Column(name = "WatchID", nullable = false)
+  private Integer watchId; // 1 watch chỉ thuộc 1 brand -> unique
 
-    @Column(name = "BrandID", nullable = false)
-    private Integer brandId;
+  @Column(name = "BrandID", nullable = false)
+  private Integer brandId;
 
-    @Column(name = "UpdatedAt")
-    private LocalDateTime updatedAt;
+  @Column(name = "UpdatedAt")
+  private LocalDateTime updatedAt;
 }
