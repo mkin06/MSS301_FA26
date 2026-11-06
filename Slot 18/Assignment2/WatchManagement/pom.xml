@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.mss301</groupId>
+    <artifactId>watch-management</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <!-- TODO-1.1: convenience reactor; each Initializr project remains independent. -->
+    <modules>
+        <module>MSAccount_DE190468</module>
+        <module>MSBrand_DE190468</module>
+        <module>MSWatch_DE190468</module>
+        <module>APIGateway_DE190468</module>
+    </modules>
+</project>
