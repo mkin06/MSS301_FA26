@@ -69,3 +69,11 @@ Chạy collection bằng Postman GUI ở 8081/8082 khi các service đã mở; h
 Script kiểm chứng SQL metadata bằng `sqlcmd -E`, yêu cầu tài khoản Windows
 đọc được các DB bài này. Test dùng watch99 và tạm gỡ/phục hồi watch1; chỉ dùng
 với database bài tập không có dữ liệu nghiệp vụ của các ID test đó.
+
+## Build ? t?ng m?c commit
+
+?? duy?t 35 commit kh?ng ph?i merge trong Git ri?ng WatchManagement; m?i m?c
+thay ??i Java/POM/resources ??u ch?y l?i Maven package th?nh c?ng trong
+worktree t?m. C?c m?c ch? c? docs/config kh?ng c?n build l?i.
+`commit-build-audit.json` ghi hash c?a Git ri?ng, subject, project ???c build
+v? k?t qu?; thay ??i t??ng ?ng ?? ???c mirror v?o l?ch s? Slot18 c?a repo ngo?i.

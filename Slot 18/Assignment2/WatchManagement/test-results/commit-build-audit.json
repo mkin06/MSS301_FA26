@@ -1,0 +1,270 @@
+{
+  "commits": 35,
+  "builds": 25,
+  "checks": [
+    {
+      "commit": "8bdb2957758f963445485acda0b012026e5d7374",
+      "subject": "chore(config): initialize watch management repository",
+      "projectsBuilt": [],
+      "passed": true
+    },
+    {
+      "commit": "9422d0ad5daf450c2b309771d92205e4fa8c4b2a",
+      "subject": "build(ms-account): scaffold initializr project",
+      "projectsBuilt": [
+        "MSAccount_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "f39d23e9044802535420da7d34a8c89cdf912132",
+      "subject": "build(ms-brand): scaffold initializr project",
+      "projectsBuilt": [
+        "MSBrand_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "1a73be32a4a3ffd05b25c89bc610e8993e5dd754",
+      "subject": "build(ms-watch): scaffold initializr project",
+      "projectsBuilt": [
+        "MSWatch_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "29151843d2dd9f72709aedcb626066640c9785b7",
+      "subject": "build(gateway): scaffold initializr project",
+      "projectsBuilt": [
+        "APIGateway_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "fa4d58b9229447285f058bf7f7e1d923007daf81",
+      "subject": "docs(config): record initializr generation settings",
+      "projectsBuilt": [],
+      "passed": true
+    },
+    {
+      "commit": "d59c5761dff49ba0cd9725745c08558974fe2846",
+      "subject": "chore(config): create service databases",
+      "projectsBuilt": [],
+      "passed": true
+    },
+    {
+      "commit": "36424c91ef10a9bf2304e7ba12bc1ed3c849cfc9",
+      "subject": "chore(ms-account): configure sql server datasource",
+      "projectsBuilt": [
+        "MSAccount_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "902e5bdf824ded83b6c7b4b3d2f31a903654966e",
+      "subject": "chore(ms-brand): configure sql server datasource",
+      "projectsBuilt": [
+        "MSBrand_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "0730f5f3520d276534e688406933669ab292a285",
+      "subject": "chore(ms-watch): configure sql server datasource",
+      "projectsBuilt": [
+        "MSWatch_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "46f50ebb021af38954b9d73d0965d412576e1cee",
+      "subject": "feat(ms-account): map and seed bcrypt accounts",
+      "projectsBuilt": [
+        "MSAccount_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "1e7af82e4501b9cc9c549819fb3556ad489644b2",
+      "subject": "feat(ms-account): issue access and refresh jwt tokens",
+      "projectsBuilt": [
+        "MSAccount_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "d9c6e1fbc07769761befa85c9a30abb9e09a1afb",
+      "subject": "feat(ms-account): add authentication request contracts",
+      "projectsBuilt": [
+        "MSAccount_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "0e0298f3df724041489ee2dc431c638221b053cc",
+      "subject": "feat(ms-account): enforce login and refresh rules",
+      "projectsBuilt": [
+        "MSAccount_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "9132db375affd246090d4fbf6b53d6f97f0a0c55",
+      "subject": "feat(ms-account): expose login refresh and logout api",
+      "projectsBuilt": [
+        "MSAccount_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "993d2bbfba695cea3d726e4726f759a4bf86ff9d",
+      "subject": "docs: design watch sagas and compensation rules",
+      "projectsBuilt": [],
+      "passed": true
+    },
+    {
+      "commit": "a30396b698be3829a95c6cd412088062a8eb95ae",
+      "subject": "feat(ms-brand): map brand and watch assignment entities",
+      "projectsBuilt": [
+        "MSBrand_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "6dba82270fe8d0310d737b8aebf3394bc5d78e88",
+      "subject": "feat(ms-brand): seed required brands and watch links",
+      "projectsBuilt": [
+        "MSBrand_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "5fab1cf4319fdea2986331b2f3678e80f9dd6097",
+      "subject": "feat(ms-brand): define participant response contracts",
+      "projectsBuilt": [
+        "MSBrand_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "2c2d2c3c4e30fc8866c39faf541513a28ff4779b",
+      "subject": "feat(ms-brand): assign watches with idempotent upsert",
+      "projectsBuilt": [
+        "MSBrand_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "1c188b9189820c6203a8f924e93e01586a288252",
+      "subject": "feat(ms-brand): unassign watches safely on retries",
+      "projectsBuilt": [
+        "MSBrand_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "5a39278020c2bdc0f9ae76f79f382231c575e801",
+      "subject": "feat(ms-brand): expose internal assignment endpoints",
+      "projectsBuilt": [
+        "MSBrand_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "8ac478edda5ee61345de9608b9043fe4c5f06847",
+      "subject": "feat(ms-brand): expose brands and assigned watch lists",
+      "projectsBuilt": [
+        "MSBrand_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "f27236b76845108964fd85b8d74169b9abe8f963",
+      "subject": "style: format java sources consistently",
+      "projectsBuilt": [
+        "APIGateway_DE190468",
+        "MSAccount_DE190468",
+        "MSBrand_DE190468",
+        "MSWatch_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "e39f2713d5c05be99a6865c38a4e0798a0d91d2b",
+      "subject": "fix(ms-brand): start transaction before participant lock",
+      "projectsBuilt": [
+        "MSBrand_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "a2e7010767731ac345e211b996767fe78252bffb",
+      "subject": "build(config): add four-project maven reactor",
+      "projectsBuilt": [
+        "reactor"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "49f43ed4aab799a54eff4f7a93f9a737d1c6a622",
+      "subject": "test(ms-account): verify jwt claims and token validation",
+      "projectsBuilt": [
+        "MSAccount_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "70e8c9035fdb7ab8bdd88ac3f476297758a51135",
+      "subject": "test(ms-account): cover login and refresh edge cases",
+      "projectsBuilt": [
+        "MSAccount_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "47746d11ec664e9505189efe853e4abd5590fd97",
+      "subject": "test(ms-brand): verify assignment idempotency and queries",
+      "projectsBuilt": [
+        "MSBrand_DE190468"
+      ],
+      "passed": true
+    },
+    {
+      "commit": "c2389d5866a33a31d0b4eddb8d3100388cee71c1",
+      "subject": "test(postman): cover authentication and brand participant",
+      "projectsBuilt": [],
+      "passed": true
+    },
+    {
+      "commit": "f9f9df8e2c7ceb760faf06bfe56d6f557b838fdc",
+      "subject": "chore(config): load local environment without exposing secrets",
+      "projectsBuilt": [],
+      "passed": true
+    },
+    {
+      "commit": "a9d5e0f81c249b869ac8c6c711346406e2b539cb",
+      "subject": "test(config): verify todo5 runtime and sql invariants",
+      "projectsBuilt": [],
+      "passed": true
+    },
+    {
+      "commit": "7923c46357fcff93070a67c906e9db6f12d888e7",
+      "subject": "docs(config): analyze requirements through todo5",
+      "projectsBuilt": [],
+      "passed": true
+    },
+    {
+      "commit": "246abca9b9b5f99e08982d85b1c8e710c1d7ae45",
+      "subject": "docs: add todo5 setup and api instructions",
+      "projectsBuilt": [],
+      "passed": true
+    },
+    {
+      "commit": "14af5c6006a26671645aa45f7a7501653dc3f268",
+      "subject": "test(config): record todo5 verification results",
+      "projectsBuilt": [],
+      "passed": true
+    }
+  ],
+  "note": "Commit hashes refer to the local WatchManagement repository; logical changes are mirrored as regular files in the outer Slot18 history."
+}
