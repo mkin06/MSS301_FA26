@@ -29,4 +29,19 @@ public class BrandService {
         return new AssignmentResponse(watchId,brandId,previous,"ASSIGNED");
     }
     private ResponseStatusException missing(Integer id) {return new ResponseStatusException(HttpStatus.NOT_FOUND,"Brand not found with id: "+id);}
+
+    // [TODO-5.3] Repeated unassign is successful even if no link remains.
+    @Transactional public AssignmentResponse unassignWatch(Integer watchId) {
+        if(watchId==null || watchId<=0) throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Identifiers must be positive");
+        lock.acquire(watchId);
+        var link=brandWatchRepository.findByWatchId(watchId);
+        if(link.isEmpty()) {
+            log.info("[SAGA-PARTICIPANT] UNASSIGN watch={} -> nothing to do (idempotent)",watchId);
+            return new AssignmentResponse(watchId,null,null,"NOTHING_TO_DO");
+        }
+        Integer previous=link.get().getBrandId();
+        brandWatchRepository.delete(link.get());brandWatchRepository.flush();
+        log.info("[SAGA-PARTICIPANT] UNASSIGN watch={} from brand={}",watchId,previous);
+        return new AssignmentResponse(watchId,null,previous,"UNASSIGNED");
+    }
 }
