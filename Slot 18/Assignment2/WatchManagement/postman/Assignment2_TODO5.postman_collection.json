@@ -1,0 +1,913 @@
+{
+  "info": {
+    "name": "Assignment2 TODO0–5 — DE190468",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Direct MSAccount/MSBrand tests only. Gateway routing and MSWatch saga begin at TODO6–7. Run in order against fresh assignment seed data."
+  },
+  "variable": [
+    {
+      "key": "accountUrl",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "brandUrl",
+      "value": "http://localhost:8082"
+    }
+  ],
+  "item": [
+    {
+      "name": "TODO-3.5 Admin login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"adminsys\",\n  \"password\": \"@1\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.collectionVariables.set(\"accessToken\",r.data.accessToken);",
+              "pm.collectionVariables.set(\"refreshToken\",r.data.refreshToken);",
+              "pm.test(\"Admin role\",()=>pm.expect(r.data.role).to.eql(1));",
+              "const decode=t=>JSON.parse(Buffer.from(t.split(\".\")[1],\"base64\").toString());",
+              "const a=decode(r.data.accessToken),f=decode(r.data.refreshToken);",
+              "pm.test(\"Access claims and 15 minutes\",()=>{pm.expect(a.type).to.eql(\"access\");pm.expect(a.role).to.eql(1);pm.expect(a.sub).to.eql(\"1\");pm.expect(a.exp-a.iat).to.eql(900);});",
+              "pm.test(\"Refresh claims and 7 days\",()=>{pm.expect(f.type).to.eql(\"refresh\");pm.expect(f.exp-f.iat).to.eql(604800);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Wrong password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"adminsys\",\n  \"password\": \"wrong\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\",()=>pm.response.to.have.status(401));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Unknown user",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"nobody\",\n  \"password\": \"@1\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\",()=>pm.response.to.have.status(401));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Inactive member",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"member02\",\n  \"password\": \"@1\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 403\",()=>pm.response.to.have.status(403));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Inactive staff before password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"staff01\",\n  \"password\": \"wrong\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 403\",()=>pm.response.to.have.status(403));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Missing username",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"password\": \"@1\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Blank password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"adminsys\",\n  \"password\": \" \"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Staff login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"staff02\",\n  \"password\": \"@1\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"Staff role\",()=>pm.expect(r.data.role).to.eql(2));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Member login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"member01\",\n  \"password\": \"@1\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"Member role\",()=>pm.expect(r.data.role).to.eql(3));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Refresh valid token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/refresh",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"New tokens\",()=>{pm.expect(r.data.accessToken).to.be.a(\"string\");pm.expect(r.data.refreshToken).not.to.eql(pm.collectionVariables.get(\"refreshToken\"));});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Reject access as refresh",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/refresh",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"refreshToken\": \"{{accessToken}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\",()=>pm.response.to.have.status(401));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));",
+              "pm.test(\"Reason\",()=>pm.expect(r.message).to.eql(\"Token is not a refresh token\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Reject malformed refresh",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/refresh",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"refreshToken\": \"bad\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\",()=>pm.response.to.have.status(401));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Reject missing refresh",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/refresh",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\",()=>pm.response.to.have.status(401));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-3.5 Logout discards client tokens",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{accountUrl}}/api/auth/logout"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.5 List brands with counts",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/api/brands"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"Five seeded brands and counts\",()=>{pm.expect(r.data.map(b=>b.brandName)).to.eql([\"Rolex\",\"Omega\",\"Seiko\",\"Casio\",\"TAG Heuer\"]);pm.expect(r.data.map(b=>b.watchCount)).to.eql([2,2,2,3,1]);});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.5 Rolex detail",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/api/brands/1"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"Rolex count\",()=>pm.expect(r.data.watchCount).to.eql(2));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.5 Rolex watches",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/api/brands/1/watches"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"Seed watch ids\",()=>pm.expect(r.data.watchIds).to.eql([1,8]));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.2 Assign watch 99 1",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/internal/brands/1/watches/99"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"Assigned\",()=>pm.expect(r.data.status).to.eql(\"ASSIGNED\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.2 Assign watch 99 2",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/internal/brands/1/watches/99"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"Assigned\",()=>pm.expect(r.data.status).to.eql(\"ASSIGNED\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.2 One row after repeated assign",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/api/brands/1/watches"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"Exactly one watch 99\",()=>pm.expect(r.data.watchIds.filter(id=>id===99).length).to.eql(1));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.2 Invalid brand preserves existing link",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/internal/brands/999/watches/99"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\",()=>pm.response.to.have.status(404));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));",
+              "pm.test(\"Reason\",()=>pm.expect(r.message).to.eql(\"Brand not found with id: 999\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.2 Reassign to Omega",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/internal/brands/2/watches/99"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"Previous brand\",()=>pm.expect(r.data.previousBrandId).to.eql(1));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.5 Verify reassignment",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/api/brands/2/watches"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"Moved watch\",()=>pm.expect(r.data.watchIds).to.include(99));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.3 Unassign once",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/internal/brands/watches/99"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"UNASSIGNED\",()=>pm.expect(r.data.status).to.eql(\"UNASSIGNED\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.3 Unassign twice",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/internal/brands/watches/99"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"NOTHING_TO_DO\",()=>pm.expect(r.data.status).to.eql(\"NOTHING_TO_DO\"));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.5 Missing brand detail",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/api/brands/999"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\",()=>pm.response.to.have.status(404));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.5 Missing brand watches",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/api/brands/999/watches"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\",()=>pm.response.to.have.status(404));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.2 Reject nonpositive id",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/internal/brands/1/watches/0"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\",()=>pm.response.to.have.status(400));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(false));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TODO-5.6 Counts restored",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{brandUrl}}/api/brands"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\",()=>pm.response.to.have.status(200));",
+              "const r=pm.response.json();",
+              "pm.test(\"Success flag\",()=>pm.expect(r.success).to.eql(true));",
+              "pm.test(\"Initial counts restored\",()=>pm.expect(r.data.map(b=>b.watchCount)).to.eql([2,2,2,3,1]));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
