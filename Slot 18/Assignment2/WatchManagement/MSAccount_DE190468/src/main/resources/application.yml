@@ -16,3 +16,9 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: false
+
+# [TODO-3.2] Supply JWT_SECRET in the environment.
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:900000}
+  refresh-expiration: ${REFRESH_EXPIRATION:604800000}
