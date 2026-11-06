@@ -1,0 +1,7 @@
+# <type>(<scope>): <subject> (English imperative, <=72 characters, no dot)
+# type: feat|fix|refactor|build|test|docs|chore|perf|style|ci
+# scope: ms-account|ms-brand|ms-watch|gateway|config|postman
+#
+# Explain why the change is needed.
+#
+# Refs: TODO-x.y
